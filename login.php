@@ -1,20 +1,20 @@
 <?php
 	if( !empty($_POST) ) {
-			//Connection
-			$conn = new PDO("mysql:host=localhost;dbname=pl2", "root", "root");
-			//Get value out of POST
-			$email = $_POST['email'];
-			$password = $_POST['password'];
+		//Connection
+		$conn = new PDO("mysql:host=localhost;dbname=pl2", "root", "root");
+		//Get value out of POST
+		$email = $_POST['email'];
+		$password = $_POST['password'];
 
-			//Query
-			$statement = $conn->prepare("select * from users where email = :email");
-			//Placeholder for SQL-injection
-			$statement->bindParam(":email", $email);
-			$statement->execute();
-			$user = $statement->fetch(PDO::FETCH_ASSOC);
+		//Query
+		$statement = $conn->prepare("select * from users where email = :email");
+		//Placeholder for SQL-injection
+		$statement->bindParam(":email", $email);
+		$statement->execute();
+		$user = $statement->fetch(PDO::FETCH_ASSOC);
 	
-	//Checks if password matches the hash from database		
-	if( password_verify($password, $user['password'] ) ) {
+		//Checks if password matches the hash from database		
+		if( password_verify($password, $user['password'] ) ) {
 			//Yes? -> Go to index.php page
 			header('location: index.php');
 		}
