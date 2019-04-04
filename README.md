@@ -1,6 +1,5 @@
 # PHP-Inspiration-Hunter
 \
-\
 ## Codeer Standaarden:
 - Classes: Beginnen met hoofdletter
 - Getters en Setters vanaf begin aanmaken
