@@ -9,3 +9,7 @@
 - Do not close the Classes: No `?>`
 - Use only UTF-8
 - Use `require_once('bootstrap.php')` - No includes
+
+## Design:
+![#f03c15](https://placehold.it/15/f03c15/000000?text=+) `Alle design files of afbeeldingen worden in de branch Design geplaats`<br>
+![#f03c15](https://placehold.it/15/f03c15/000000?text=+) `Deze mag dan ook NOOIT gemerged worden!`
