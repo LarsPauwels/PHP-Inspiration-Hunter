@@ -1,7 +1,7 @@
 <?php
 	if( !empty($_POST) ) {
 		//Connection
-		$conn = new PDO("mysql:host=localhost;dbname=pl2", "root", "root");
+		$conn = new PDO("mysql:host=localhost;dbname=urbex", "root", "root");
 		//Get value out of POST
 		$email = $_POST['email'];
 		$password = $_POST['password'];
@@ -17,6 +17,8 @@
 		if( password_verify($password, $user['password'] ) ) {
 			//Yes? -> Go to index.php page
 			header('location: index.php');
+		} else {
+			$error = "Login failed";
 		}
 	}
 ?><!DOCTYPE html>
@@ -32,6 +34,16 @@
 		<div>
 			<form action="" method="post">
 				<h2>Sign In</h2>
+
+				<!--  if return is false - show div form-error-->
+				<?php if( isset($error) ): ?>
+				<div class="form__error">
+					<p>
+						Sorry, we can't log you in with that email address and password. Can you try again?
+					</p>
+				</div>
+				<?php endif; ?>
+
 				<div>
 					<label for="Email">Email</label>
 					<input type="text" name="email">
