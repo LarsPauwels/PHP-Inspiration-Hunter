@@ -1,24 +1,17 @@
 <?php
-	if( !empty($_POST) ) {
-		//Connection
-		$conn = new PDO("mysql:host=localhost;dbname=urbex", "root", "root");
-		//Get value out of POST
-		$email = $_POST['email'];
-		$password = $_POST['password'];
-
-		//Query
-		$statement = $conn->prepare("select * from users where email = :email");
-		//Placeholder for SQL-injection
-		$statement->bindParam(":email", $email);
-		$statement->execute();
-		$user = $statement->fetch(PDO::FETCH_ASSOC);
-	
-		//Checks if password matches the hash from database		
-		if( password_verify($password, $user['password'] ) ) {
-			//Yes? -> Go to index.php page
-			header('location: index.php');
+	require_once("bootstrap.php");
+	if(!empty($_POST)) {
+		// Start new class user
+		$user = new User();
+		// Send posts to class setters
+		$user->setEmail($_POST["email"]);
+		$user->setPassword($_POST["password"]);
+		if($user->login()) {
+			session_start();
+			$_SESSION["user"] = $user->getEmail();
+			header("Location: index.php");
 		} else {
-			$error = "Login failed";
+			echo $err = "Your email or password are not correct!";
 		}
 	}
 ?><!DOCTYPE html>
@@ -36,7 +29,7 @@
 				<h2>Sign In</h2>
 
 				<!--  if return is false - show div form-error-->
-				<?php if( isset($error) ): ?>
+				<?php if( isset($err) ): ?>
 				<div class="form__error">
 					<p>
 						Sorry, we can't log you in with that email address and password. Can you try again?
@@ -45,13 +38,13 @@
 				<?php endif; ?>
 
 				<div>
-					<label for="Email">Email</label>
-					<input type="text" name="email">
+					<label for="email">Email</label>
+					<input type="text" name="email" id="email">
 				</div>
 
 				<div>
-					<label for="Password">Password</label>
-					<input type="password" name="password">
+					<label for="password">Password</label>
+					<input type="password" name="password" id="password">
 				</div>
 
 				<div class="form__field">
@@ -66,7 +59,6 @@
 					<p>No account yet?<a href="register.php">Sign up here</a></p>
 				</div>
 			</form>
-
 		</div>
 	</div>
 </body>
