@@ -127,9 +127,8 @@
 	     */
 	    public function login() {
 	    	try {
-	    		require_once("RegisterChecks.php");
-
-	    		if(canLogin($email, $password)) {
+	    		$security = new LoginSecurity;
+	    		if($security->canLogin($this->email, $this->password)) {
 		    		// Getting database connection in class DB
 		    		$conn = DB::getInstance();
 
@@ -139,8 +138,10 @@
 					$statement->execute();
 					$user = $statement->fetch(PDO::FETCH_ASSOC);
 
+					print_r($user);
+
 					// Checking if password is the same as database password
-					if(password_verify($this->password, $user['password'])) {
+					if(LoginSecurity::pwVerify($this->password, $user["password"])) {
 						// Password is the same => return true
 						return true;
 					}
@@ -162,11 +163,12 @@
 	     */
 	    public function register() {
 	    	try {
-	    		require_once("RegisterChecks.php");
-	    		//Hash password
-		    	$password = pwHash($this->password);
+		    	$security = new RegisterSecurity;
+	    		if ($security->canRegister($this->firstname, $this->lastname, $this->username, $this->email, $this->password, $this->confirmPassword)) {
 
-	    		if (canRegister($this->firstname, $this->lastname, $this->username, $this->email, $this->password, $this->confirmPassword)) {
+	    			//Hash password
+			    	$password = RegisterSecurity::pwHash($this->password);
+
 	    			// Getting database connection in class DB
 		    		$conn = DB::getInstance();
 
@@ -176,7 +178,7 @@
 					$statement->bindParam(":lastname", $this->lastname);
 					$statement->bindParam(":username", $this->username);
 					$statement->bindParam(":email", $this->email);
-					$statement->bindParam(":password", $this->password);
+					$statement->bindParam(":password", $password);
 					// Chacking if user is succesfully added to the database
 					if($statement->execute()) {
 						// User is successfully added => return true

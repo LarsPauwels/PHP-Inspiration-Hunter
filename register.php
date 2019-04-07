@@ -74,7 +74,7 @@
 				<br>
 
 				<div>
-					<p>Already have a account?<a href="register.php">Sign in here</a></p>
+					<p>Already have a account?<a href="login.php">Sign in here</a></p>
 				</div>
 			</form>
 		</div>
