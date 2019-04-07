@@ -32,7 +32,7 @@
 				<?php if( isset($err) ): ?>
 				<div class="form__error">
 					<p>
-						Sorry, we can't log you in with that email address and password. Can you try again?
+						<?php echo $err; ?>
 					</p>
 				</div>
 				<?php endif; ?>
