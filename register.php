@@ -1,25 +1,26 @@
 <?php
 	require_once("bootstrap.php");
-	if(!empty($_POST)) {
+	if (!empty($_POST)) {
 		// Start new class user
 		$user = new User();
 		// Send posts to class setters
 		$user->setEmail($_POST["email"]);
 		$user->setPassword($_POST["password"]);
+		$user->setConfirmPassword($_POST["confirmPassword"]);
+		$user->setFirstname($_POST["firstname"]);
+		$user->setLastname($_POST["lastname"]);
+		$user->setUsername($_POST["username"]);
 
-		if($user->login()) {
+		if($user->register()) {
 			session_start();
 			$_SESSION["user"] = $user->getEmail();
 			header("Location: index.php");
 		}
 	}
 ?><!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>LogIn</title>
+	<title></title>
 </head>
 <body>
 	<div>
@@ -37,6 +38,21 @@
 				<?php endif; ?>
 
 				<div>
+					<label for="firstname">Firts Name</label>
+					<input type="text" name="firstname" id="firstname">
+				</div>
+
+				<div>
+					<label for="lastname">Last Name</label>
+					<input type="text" name="lastname" id="lastname">
+				</div>
+
+				<div>
+					<label for="username">Username</label>
+					<input type="text" name="username" id="username">
+				</div>
+
+				<div>
 					<label for="email">Email</label>
 					<input type="email" name="email" id="email">
 				</div>
@@ -46,16 +62,19 @@
 					<input type="password" name="password" id="password">
 				</div>
 
+				<div>
+					<label for="confirmPassword">Confirm Password</label>
+					<input type="password" name="confirmPassword" id="confirmPassword">
+				</div>
+
 				<div class="form__field">
-					<input type="submit" value="Sign in">	
-					<input type="checkbox" id="rememberMe"> 
-					<label for="rememberMe">Remember me</label>
+					<input type="submit" value="Sign up">	
 				</div>
 
 				<br>
 
 				<div>
-					<p>No account yet?<a href="register.php">Sign up here</a></p>
+					<p>Already have a account?<a href="register.php">Sign in here</a></p>
 				</div>
 			</form>
 		</div>

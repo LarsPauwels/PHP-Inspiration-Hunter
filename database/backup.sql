@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 05 apr 2019 om 01:39
+-- Gegenereerd op: 07 apr 2019 om 22:51
 -- Serverversie: 10.1.31-MariaDB
 -- PHP-versie: 7.2.4
 
@@ -161,6 +161,7 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `firstname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `lastname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `profile_pic` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -169,6 +170,13 @@ CREATE TABLE `users` (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `active` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `users`
+--
+
+INSERT INTO `users` (`id`, `firstname`, `lastname`, `username`, `email`, `password`, `profile_pic`, `description`, `background_pic`, `timestamp`, `active`) VALUES
+(1, 'Lars', 'Pauwels', 'admin', 'lars.pauwels@telenet.be', 'HPomen5277', '', '', '', '2019-04-07 20:43:15', 0);
 
 --
 -- Indexen voor geëxporteerde tabellen
@@ -308,7 +316,7 @@ ALTER TABLE `tags_following`
 -- AUTO_INCREMENT voor een tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
