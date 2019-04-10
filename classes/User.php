@@ -193,5 +193,23 @@
 	    		$_SESSION["errors"] = "Error: " . $t;
 	    		return false;
 	    	}
-	    }
+		}
+		
+		public function updateEmail() {
+			try {
+				$conn = DB::getInstance();
+
+				$statement = $conn->prepare("UPDATE users SET email = :email WHERE id = 2");
+				$statement->bindParam(":email", $this->email);
+
+				if ($statement->execute()) {
+					return true;
+				}
+				$_SESSION["errors"] = "Error: " . $t;
+				return false;
+			} catch (Throwable $t) {
+				$_SESSION["errors"] = "Error: " . $t;
+				return false;
+			}
+		}
 	}
