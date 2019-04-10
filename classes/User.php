@@ -197,16 +197,20 @@
 		
 		public function updateEmail() {
 			try {
-				$conn = DB::getInstance();
+				$security = new LoginSecurity;
+				if ($security->validEmail($this->email)) {
+					$conn = DB::getInstance();
 
-				$statement = $conn->prepare("UPDATE users SET email = :email WHERE id = 2");
-				$statement->bindParam(":email", $this->email);
+					$statement = $conn->prepare("UPDATE users SET email = :email WHERE id = 2");
+					$statement->bindParam(":email", $this->email);
 
-				if ($statement->execute()) {
-					return true;
-				}
-				$_SESSION["errors"] = "Error: " . $t;
-				return false;
+					if ($statement->execute()) {
+						return true;
+					}
+					$_SESSION["errors"] = "Error: " . $t;
+					return false;
+					}
+				
 			} catch (Throwable $t) {
 				$_SESSION["errors"] = "Error: " . $t;
 				return false;

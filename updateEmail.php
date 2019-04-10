@@ -16,6 +16,7 @@
     echo session_id();
     echo $currentUser;
     echo $newEmail;
+
     
 
 ?><!DOCTYPE html>
