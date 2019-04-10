@@ -198,18 +198,23 @@
 		public function updateEmail() {
 			try {
 				$security = new LoginSecurity;
+
+				// check if email is a valid email
 				if ($security->validEmail($this->email)) {
+
+					// Hash password
+					$password = RegisterSecurity::pwHash($this->password);
+					
+					// Connect to db
 					$conn = DB::getInstance();
 
-					$statement = $conn->prepare("UPDATE users SET email = :email WHERE id = 2");
+					// Query to update user's email
+					$statement = $conn->prepare("UPDATE users SET email = :email WHERE password = $password");
 					$statement->bindParam(":email", $this->email);
+					// $statement->bindParam(":password", $this->password);
+					$user = $statement->fetch(PDO::FETCH_ASSOC);
 
-					if ($statement->execute()) {
-						return true;
-					}
-					$_SESSION["errors"] = "Error: " . $t;
-					return false;
-					}
+				}
 				
 			} catch (Throwable $t) {
 				$_SESSION["errors"] = "Error: " . $t;

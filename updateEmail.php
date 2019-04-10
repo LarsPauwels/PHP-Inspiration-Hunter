@@ -4,20 +4,23 @@
     if (!empty($_POST)) {
         $user = new User();
         $user->setEmail($_POST["email"]);
-        $newEmail = $_POST["email"];
+        $user->setPassword($_POST["password"]);
 
         if ($user->updateEmail()) {
             $_SESSION["user"] = $user->getEmail();
+            $pw = $user->getPassword();
+            echo $pw;
+            echo "Email succesfully updated";
+        } else {
+            echo "Something went wrong, please try again";
+            $pw = $user->getPassword();
+            echo $pw;
+            $options = [
+                'cost' => 12
+            ];
+            echo password_hash($pw, PASSWORD_BCRYPT, $options);
         }
     }
-
-    
-    $currentUser = $_SESSION["user"];
-    echo session_id();
-    echo $currentUser;
-    echo $newEmail;
-
-    
 
 ?><!DOCTYPE html>
 <html lang="en">
@@ -39,8 +42,8 @@
 				</div>
 
 				<div>
-					<label for="currentPassword">Current password</label>
-					<input type="password" name="currentPassword" id="currentPassword">
+					<label for="password">Current password</label>
+					<input type="password" name="password" id="password">
 				</div>
 
                 <div class="form__field">
