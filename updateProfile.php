@@ -1,27 +1,36 @@
 <?php
 
     require_once("bootstrap.php");
-    if (!empty($_POST)) {
+
+    // update description part
+    if (!empty($_POST["updateDescription"])) {
+        $user = new User();
+        $user->setDescription($_POST["description"]);
+
+        if ($user->updateDescription()) {
+            $_SESSION["user"] = $user->getEmail();
+            echo "Description succesfully updated";
+        } else {
+            echo "Something went wrong, please try again";
+        }
+
+    }
+    
+    // update email part
+    if (!empty($_POST["updateEmail"])) {
         $user = new User();
         $user->setEmail($_POST["email"]);
         $user->setPassword($_POST["password"]);
-        
 
         if ($user->updateEmail()) {
             $_SESSION["user"] = $user->getEmail();
-            /*$pw = $user->getPassword();
-            echo $pw;*/
             echo "Email succesfully updated";
         } else {
             echo "Something went wrong, please try again";
-            /*$pw = $user->getPassword();
-            echo $pw;
-            $options = [
-                'cost' => 12
-            ];
-            echo password_hash($pw, PASSWORD_BCRYPT, $options);*/
         }
     }
+
+    // update password part
 
 ?><!DOCTYPE html>
 <html lang="en">
@@ -43,10 +52,10 @@
                 </div>
 
                 <div class="form__field">
-                    <input type="submit" value="Update description">
+                    <input name="updateDescription" type="submit" value="Update description">
                 </div>
 
-            </form>    
+            </form>
         </div>
 
         <div>
@@ -64,7 +73,7 @@
 				</div>
 
                 <div class="form__field">
-					<input type="submit" value="Update email">	
+					<input name="updateEmail" type="submit" value="Update email">	
 				</div>
 
             </form>
@@ -90,7 +99,7 @@
                 </div>
 
                 <div class="form__field">
-                    <input type="submit" value="Update password">
+                    <input name="updatePassword" type="submit" value="Update password">
                 </div>
 
             </form>

@@ -213,6 +213,24 @@
 	    		return false;
 	    	}
 		}
+
+		public function updateDescription() {
+			try {
+				$conn = DB::getInstance();
+
+				$statement = $conn->prepare("UPDATE users SET description = :description WHERE id = 2");
+				$statement->bindParam(":description", $this->description);
+				$user = $statement->fetch(PDO::FETCH_ASSOC);
+
+				if ($statement->execute()) {
+					return true;
+				}
+
+			} catch (Throwable $t) {
+				$_SESSION["errors"] = "Error: " . $t;
+				return false;
+			}
+		}
 		
 		public function updateEmail() {
 			try {
