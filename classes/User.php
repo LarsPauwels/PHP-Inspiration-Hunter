@@ -11,6 +11,7 @@
 		private $firstname;
 		private $lastname;
 		private $username;
+		private $description;
 
 	    /**
 	     * @return mixed
@@ -116,6 +117,24 @@
 	     */
 	    public function setUsername($username) {
 	        $this->username = $username;
+
+	        return $this;
+		}
+		
+		/**
+	     * @return mixed
+	     */
+	    public function getDescription() {
+	        return $this->description;
+	    }
+
+	    /**
+	     * @param mixed $description
+	     *
+	     * @return self
+	     */
+	    public function setDescription($description) {
+	        $this->description = $description;
 
 	        return $this;
 	    }

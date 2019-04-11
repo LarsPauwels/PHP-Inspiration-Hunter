@@ -5,6 +5,7 @@
         $user = new User();
         $user->setEmail($_POST["email"]);
         $user->setPassword($_POST["password"]);
+        
 
         if ($user->updateEmail()) {
             $_SESSION["user"] = $user->getEmail();
@@ -32,6 +33,22 @@
 </head>
 <body>
     <div>
+        <div>
+            <form action="" method="POST">
+                <h2>Update description</h2>
+
+                <div>
+                    <label for="description">Description</label>
+                    <input type="text" name="description" id="description">
+                </div>
+
+                <div class="form__field">
+                    <input type="submit" value="Update description">
+                </div>
+
+            </form>    
+        </div>
+
         <div>
             <form action="" method="POST">
                 <h2>Update email</h2>
