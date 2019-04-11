@@ -8,17 +8,17 @@
 
         if ($user->updateEmail()) {
             $_SESSION["user"] = $user->getEmail();
-            $pw = $user->getPassword();
-            echo $pw;
+            /*$pw = $user->getPassword();
+            echo $pw;*/
             echo "Email succesfully updated";
         } else {
             echo "Something went wrong, please try again";
-            $pw = $user->getPassword();
+            /*$pw = $user->getPassword();
             echo $pw;
             $options = [
                 'cost' => 12
             ];
-            echo password_hash($pw, PASSWORD_BCRYPT, $options);
+            echo password_hash($pw, PASSWORD_BCRYPT, $options);*/
         }
     }
 
@@ -49,6 +49,32 @@
                 <div class="form__field">
 					<input type="submit" value="Update email">	
 				</div>
+
+            </form>
+        </div>
+
+        <div>
+            <form action="" method="POST">
+                <h2>Update password</h2>
+
+                <div>
+                    <label for="currentPassword">Current password</label>
+                    <input type="password" name="currentPassword" id="currentPassword">
+                </div>
+
+                <div>
+                    <label for="newPassword">New password</label>
+                    <input type="password" name="newPassword" id="newPassword">
+                </div>
+
+                <div>
+                    <label for="confirmNewPassword">Confirm new password</label>
+                    <input type="password" name="confirmNewPassword" id="confirmNewPassword">
+                </div>
+
+                <div class="form__field">
+                    <input type="submit" value="Update password">
+                </div>
 
             </form>
         </div>

@@ -8,5 +8,6 @@
 </head>
 <body>
     <p>INDEX PAGE</p>
+    <a href="updateProfile.php">Update your email</a>
 </body>
 </html>
