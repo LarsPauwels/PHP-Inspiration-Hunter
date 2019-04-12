@@ -6,9 +6,7 @@
 		// Send posts to class setters
 		$user->setEmail($_POST["email"]);
 		$user->setPassword($_POST["password"]);
-
 		if($user->login()) {
-			session_start();
 			$_SESSION["user"] = $user->getEmail();
 			header("Location: index.php");
 		}
@@ -38,7 +36,7 @@
 
 				<div>
 					<label for="email">Email</label>
-					<input type="email" name="email" id="email">
+					<input type="text" name="email" id="email">
 				</div>
 
 				<div>
@@ -61,4 +59,3 @@
 		</div>
 	</div>
 </body>
-</html>
