@@ -7,7 +7,7 @@
 		$user->setEmail($_POST["email"]);
 		$user->setPassword($_POST["password"]);
 		if($user->login()) {
-			session_start();
+			require_once('bootstrap.php');
 			$_SESSION["user"] = $user->getEmail();
 			header("Location: index.php");
 		} else {
