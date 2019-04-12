@@ -9,8 +9,6 @@
 		if($user->login()) {
 			$_SESSION["user"] = $user->getEmail();
 			header("Location: index.php");
-		} else {
-			echo $err = "Your email or password are not correct!";
 		}
 	}
 ?><!DOCTYPE html>
@@ -27,10 +25,11 @@
 			<form action="" method="post">
 				<h2>Sign In</h2>
 
-				<?php if( isset($err) ): ?>
+				<!-- If return is false - show div form-error-->
+				<?php if(isset($_SESSION["errors"])): ?>
 				<div class="form__error">
 					<p>
-						Sorry, we can't log you in with that email address and password. Can you try again?
+						<?php echo $_SESSION["errors"]; ?>
 					</p>
 				</div>
 				<?php endif; ?>
@@ -60,4 +59,3 @@
 		</div>
 	</div>
 </body>
-</html>
