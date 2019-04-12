@@ -28,7 +28,6 @@
 			<form action="" method="post">
 				<h2>Sign In</h2>
 
-				<!--  if return is false - show div form-error-->
 				<?php if( isset($err) ): ?>
 				<div class="form__error">
 					<p>
