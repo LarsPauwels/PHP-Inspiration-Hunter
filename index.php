@@ -8,6 +8,10 @@
 </head>
 <body>
     <p>INDEX PAGE</p>
+    <form action="upload.php" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <button type="submit" name="submit">UPLOAD</button>
+    </form>
     <!-- TEST LOGOUT -->
     <a href="logout.php">Log Out</a>
 </body>
