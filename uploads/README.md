@@ -1,0 +1,1 @@
+## This is the folder where the pictures will go to when uploaded
