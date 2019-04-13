@@ -8,7 +8,6 @@
 </head>
 <body>
     <p>INDEX PAGE</p>
-
     <!-- TEST LOGOUT -->
     <a href="logout.php">Log Out</a>
 </body>
