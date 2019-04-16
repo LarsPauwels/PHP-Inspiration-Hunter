@@ -248,7 +248,7 @@
 					// Query to update user's email
 					$statement = $conn->prepare("UPDATE users SET email = :email WHERE id = 2");
 					$statement->bindParam(":email", $this->email);
-					// $statement->bindParam(":password", $this->password);
+					// $statement->bindParam(":password", $password);
 					$user = $statement->fetch(PDO::FETCH_ASSOC);
 				}
 
@@ -265,7 +265,7 @@
 
 		public function updatePassword() {
 			try {
-				$security = new LoginSecurity;
+				$security = new RegisterSecurity;
 			} catch (Throwable $t) {
 				$_SESSION["errors"] = "Error: " . $t;
 				return false;

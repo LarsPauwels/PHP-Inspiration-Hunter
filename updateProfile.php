@@ -13,7 +13,6 @@
         } else {
             echo "Something went wrong, please try again";
         }
-
     }
     
     // update email part
@@ -31,6 +30,17 @@
     }
 
     // update password part
+    if (!empty($_POST["updatePassword"])) {
+        $user = new User();
+        $user->setPassword($_POST["newPassword"]);
+
+        if ($user->updatePassword()) {
+            $_SESSION["user"] = $user->getEmail();
+            echo "Password succesfully updated";
+        } else {
+            echo "Something went wrong, please try again";
+        }
+    }
 
 ?><!DOCTYPE html>
 <html lang="en">
