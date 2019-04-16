@@ -56,6 +56,15 @@
             <form action="" method="POST">
                 <h2>Update description</h2>
 
+                <!-- If return is false - show div form-error-->
+				<?php if(isset($_SESSION["errors"])): ?>
+				<div class="form__error">
+					<p>
+						<?php echo $_SESSION["errors"]; ?>
+					</p>
+				</div>
+				<?php endif; ?>
+
                 <div>
                     <label for="description">Description</label>
                     <input type="text" name="description" id="description">
