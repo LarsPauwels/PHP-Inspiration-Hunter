@@ -240,15 +240,15 @@
 				if ($security->validEmail($this->email)) {
 
 					// Hash password
-					// $password = RegisterSecurity::pwHash($this->password);
+					$password = RegisterSecurity::pwHash($this->password);
 					
 					// Connect to db
 					$conn = DB::getInstance();
 
 					// Query to update user's email
-					$statement = $conn->prepare("UPDATE users SET email = :email WHERE email = :email");
+					$statement = $conn->prepare("UPDATE users SET email = :email WHERE password = $password");
 					$statement->bindParam(":email", $this->email);
-					// $statement->bindParam(":password", $password);
+					$statement->bindParam(":password", $password);
 					$user = $statement->fetch(PDO::FETCH_ASSOC);
 				}
 
