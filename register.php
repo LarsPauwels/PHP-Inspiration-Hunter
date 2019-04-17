@@ -12,7 +12,6 @@
 		$user->setUsername($_POST["username"]);
 
 		if($user->register()) {
-			session_start();
 			$_SESSION["user"] = $user->getEmail();
 			header("Location: index.php");
 		}

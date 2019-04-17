@@ -8,6 +8,7 @@
 </head>
 <body>
     <p>INDEX PAGE</p>
+    <!-- TEST LOGOUT -->
+    <a href="logout.php">Log Out</a>
     <a href="updateProfile.php">Update your email</a>
 </body>
-</html>
