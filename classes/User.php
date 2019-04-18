@@ -236,26 +236,40 @@
 			try {
 				$security = new LoginSecurity;
 
-				// check if email is a valid email
-				if ($security->validEmail($this->email)) {
+				// check if email is a valid email, no empty
+				if ($security->canLogin($this->email, $this->password)) {
 
 					// Hash password
-					$password = RegisterSecurity::pwHash($this->password);
+					// $password = RegisterSecurity::pwHash($this->password);
 					
 					// Connect to db
 					$conn = DB::getInstance();
 
 					// Query to update user's email
-					$statement = $conn->prepare("UPDATE users SET email = :email WHERE password = $password");
-					$statement->bindParam(":email", $this->email);
-					$statement->bindParam(":password", $password);
+					$statement = $conn->prepare("SELECT * FROM users WHERE id = 2");
+					// $statement->bindParam(":email", $this->email);
+					// $statement->bindParam(":password", $password);
+					$statement->execute();
 					$user = $statement->fetch(PDO::FETCH_ASSOC);
+
+					print_r($user);
+					$pwuser = $user["password"];
+					$emailUser = $user["email"];
+					print_r($pwuser);
+					print_r($emailUser);
+
+					if (LoginSecurity::pwVerify($this->password, $user["password"])) {
+						$stmnt = $conn->prepare("UPDATE users SET email = :email WHERE id = 2");
+						$stmnt->bindParam(":email", $this->email);
+						$stmnt->execute();
+						return true;
+					}
+
+					$_SESSION["errors"] = "Error: Something went wrong! Try again later.";
+					return false;
+
 				}
 
-				if($statement->execute()) {
-					// User email succesfully updated => return true
-					return true;
-				}
 				
 			} catch (Throwable $t) {
 				$_SESSION["errors"] = "Error: " . $t;

@@ -9,9 +9,6 @@
 
         if ($user->updateDescription()) {
             $_SESSION["user"] = $user->getEmail();
-            echo "Description succesfully updated";
-        } else {
-            echo "Something went wrong, please try again";
         }
     }
     
@@ -23,9 +20,6 @@
 
         if ($user->updateEmail()) {
             $_SESSION["user"] = $user->getEmail();
-            echo "Email succesfully updated";
-        } else {
-            echo "Something went wrong, please try again";
         }
     }
 
@@ -36,9 +30,6 @@
 
         if ($user->updatePassword()) {
             $_SESSION["user"] = $user->getEmail();
-            echo "Password succesfully updated";
-        } else {
-            echo "Something went wrong, please try again";
         }
     }
 
@@ -53,8 +44,6 @@
 <body>
     <div>
         <div>
-            <form action="" method="POST">
-                <h2>Update description</h2>
 
                 <!-- If return is false - show div form-error-->
 				<?php if(isset($_SESSION["errors"])): ?>
@@ -64,6 +53,9 @@
 					</p>
 				</div>
 				<?php endif; ?>
+
+            <form action="" method="POST">
+                <h2>Update description</h2>
 
                 <div>
                     <label for="description">Description</label>
