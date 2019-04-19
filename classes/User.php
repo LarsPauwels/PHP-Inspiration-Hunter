@@ -16,7 +16,7 @@
 	     * @return mixed
 	     */
 	    public function getEmail() {
-	        return $this->email;
+	    	return $this->email;
 	    }
 
 	    /**
@@ -25,16 +25,16 @@
 	     * @return self
 	     */
 	    public function setEmail($email) {
-	        $this->email = $email;
+	    	$this->email = $email;
 
-	        return $this;
+	    	return $this;
 	    }
 
 	    /**
 	     * @return mixed
 	     */
 	    public function getPassword() {
-	        return $this->password;
+	    	return $this->password;
 	    }
 
 	    /**
@@ -43,16 +43,16 @@
 	     * @return self
 	     */
 	    public function setPassword($password) {
-	        $this->password = $password;
+	    	$this->password = $password;
 
-	        return $this;
+	    	return $this;
 	    }
 
 	    /**
 	     * @return mixed
 	     */
 	    public function getConfirmPassword() {
-	        return $this->confirmPassword;
+	    	return $this->confirmPassword;
 	    }
 
 	    /**
@@ -61,16 +61,16 @@
 	     * @return self
 	     */
 	    public function setConfirmPassword($confirmPassword) {
-	        $this->confirmPassword = $confirmPassword;
+	    	$this->confirmPassword = $confirmPassword;
 
-	        return $this;
+	    	return $this;
 	    }
 
 	    /**
 	     * @return mixed
 	     */
 	    public function getFirstname() {
-	        return $this->firstname;
+	    	return $this->firstname;
 	    }
 
 	    /**
@@ -79,16 +79,16 @@
 	     * @return self
 	     */
 	    public function setFirstname($firstname) {
-	        $this->firstname = $firstname;
+	    	$this->firstname = $firstname;
 
-	        return $this;
+	    	return $this;
 	    }
 
 	    /**
 	     * @return mixed
 	     */
 	    public function getLastname() {
-	        return $this->lastname;
+	    	return $this->lastname;
 	    }
 
 	    /**
@@ -97,16 +97,16 @@
 	     * @return self
 	     */
 	    public function setLastname($lastname) {
-	        $this->lastname = $lastname;
+	    	$this->lastname = $lastname;
 
-	        return $this;
+	    	return $this;
 	    }
 
 	    /**
 	     * @return mixed
 	     */
 	    public function getUsername() {
-	        return $this->username;
+	    	return $this->username;
 	    }
 
 	    /**
@@ -115,9 +115,9 @@
 	     * @return self
 	     */
 	    public function setUsername($username) {
-	        $this->username = $username;
+	    	$this->username = $username;
 
-	        return $this;
+	    	return $this;
 	    }
 
 	    /**
@@ -130,30 +130,42 @@
 	    		$security = new LoginSecurity;
 	    		if($security->canLogin($this->email, $this->password)) {
 		    		// Getting database connection in class DB
-		    		$conn = DB::getInstance();
+	    			$conn = DB::getInstance();
 
 		    		// Query for getting the user
-					$statement = $conn->prepare("SELECT * FROM users WHERE email = :email");
-					$statement->bindParam(":email", $this->email);
-					$statement->execute();
-					$user = $statement->fetch(PDO::FETCH_ASSOC);
-
-					print_r($user);
+	    			$statement = $conn->prepare("SELECT * FROM users WHERE email = :email");
+	    			$statement->bindParam(":email", $this->email);
+	    			$statement->execute();
+	    			$user = $statement->fetch(PDO::FETCH_ASSOC);
 
 					// Checking if password is the same as database password
-					if(LoginSecurity::pwVerify($this->password, $user["password"])) {
+	    			if(LoginSecurity::pwVerify($this->password, $user["password"])) {
+	    				// Getting al details of the user
+	    				$this->getDetails($user);
 						// Password is the same => return true
-						return true;
-					}
+	    				return true;
+	    			}
 					// Password isn't the same => return false
-					$_SESSION["errors"] = "Error: Something went wrong! Try again later.";
-					return false;
-				}
+	    			$_SESSION["errors"]["message"] = "<li>Your password was incorrect.</li>";
+	    			return false;
+	    		}
 	    	} catch(Throwable $t) {
 	    		// If database connection fails
-	    		$_SESSION["errors"] = "Error: " . $t;
+	    		$_SESSION["errors"]["message"] = "<li>".$t."<li>";
 	    		return false;
 	    	}
+	    }
+
+	    private function getDetails($user) {
+	    	$userDetails = [
+	    		"id" => $user["id"],
+	    		"firstname" => $user["firstname"],
+	    		"lastname" => $user["lastname"],
+	    		"email" => $user["email"],
+	    		"username" =>  $user["username"],
+	    		"profile_pic" =>  $user["profile_pic"]
+	    	];
+	    	$_SESSION["user"] = $userDetails;
 	    }
 
 	    /**
@@ -163,34 +175,36 @@
 	     */
 	    public function register() {
 	    	try {
-		    	$security = new RegisterSecurity;
+	    		$security = new RegisterSecurity;
 	    		if ($security->canRegister($this->firstname, $this->lastname, $this->username, $this->email, $this->password, $this->confirmPassword)) {
 
 	    			//Hash password
-			    	$password = RegisterSecurity::pwHash($this->password);
+	    			$password = RegisterSecurity::pwHash($this->password);
 
 	    			// Getting database connection in class DB
-		    		$conn = DB::getInstance();
+	    			$conn = DB::getInstance();
 
 		    		// Query for adding the user
-					$statement = $conn->prepare("INSERT INTO users (firstname, lastname, username, email, password) VALUES (:firstname, :lastname, :username, :email, :password)");
-					$statement->bindParam(":firstname", $this->firstname);
-					$statement->bindParam(":lastname", $this->lastname);
-					$statement->bindParam(":username", $this->username);
-					$statement->bindParam(":email", $this->email);
-					$statement->bindParam(":password", $password);
-					// Chacking if user is succesfully added to the database
-					if($statement->execute()) {
+	    			$statement = $conn->prepare("INSERT INTO users (firstname, lastname, username, email, password, profile_pic, background_pic, active) VALUES (:firstname, :lastname, :username, :email, :password, :profile_pic, :background_pic, 1)");
+	    			$statement->bindParam(":firstname", $this->firstname);
+	    			$statement->bindParam(":lastname", $this->lastname);
+	    			$statement->bindParam(":username", $this->username);
+	    			$statement->bindParam(":email", $this->email);
+	    			$statement->bindParam(":password", $password);
+	    			$statement->bindParam(":profile_pic", "standerd.jpg");
+	    			$statement->bindParam(":background_pic", "standerd.jpg");
+					// Checking if user is succesfully added to the database
+	    			if($statement->execute()) {
 						// User is successfully added => return true
-						return true;
-					}
+	    				return true;
+	    			}
 					// Failed to add user => return false
-					$_SESSION["errors"] = "Error: Something went wrong! Try again later.";
-					return false;
+	    			$_SESSION["errors"]["message"] = "<li> Something went wrong! Try again later.</li>";
+	    			return false;
 	    		}
 	    	} catch(Throwable $t) {
 	    		// If database connection fails
-	    		$_SESSION["errors"] = "Error: " . $t;
+	    		$_SESSION["errors"]["message"] = "<li>".$t."<li>";
 	    		return false;
 	    	}
 	    }

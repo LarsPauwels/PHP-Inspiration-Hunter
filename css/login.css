@@ -1,0 +1,366 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+ul {
+	list-style-type: none;
+}
+
+a {
+	text-decoration: none;
+}
+
+.clearfix::after {
+	visibility: hidden;
+	display: block;
+	font-size: 0;
+	content: " ";
+	clear: both;
+	height: 0;;
+}
+
+body {
+	font-family: Raleway;
+	background-image: url(../images/bg.png);
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	height: 100vh;
+	width: 100%;
+}
+
+.form-modal {
+	position: absolute;
+	width: 450px;
+	height: auto;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: #191e22;
+	border-radius: 10px;
+	box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.1)
+}
+
+.form-modal button {
+	cursor: pointer;
+	position: relative;
+	text-transform: capitalize;
+	font-size: 1em;
+	z-index: 2;
+	outline: none;
+	background: #13161a;
+	transition: 0.2s;
+}
+
+.form-modal .btn {
+	border-radius: 10px;
+	border: none;
+	font-weight: 600;
+	font-size: 0.8em;
+	padding: 1.2em 1em!important;
+	transition: 0.5s;
+	margin-bottom: 0.5em;
+	margin-top: 0.5em;
+}
+
+.form-modal .login-option {
+	width: calc(50% - 15px) !important;
+	float: left;
+	background-color: transparent;
+	border: 1px solid #8a3ab9;
+	color: #FFF;
+	text-transform: uppercase;
+	overflow: hidden;
+	position: relative;
+}
+
+.form-modal .login-option i {
+	margin-right: 10px;
+	font-size: 1.5em;
+}
+
+.form-modal .login-option:nth-child(1) {
+	margin-right: 30px;
+	border: 1px solid #1991eb;
+}
+
+.form-modal .login-option:nth-child(1)::after {
+	background: #1991eb;
+}
+
+.form-modal .login-option::after {
+	height: 100%;
+	left: -35%;
+	top: 0;
+	transform: skew(50deg);
+	transition-duration: 0.6s;
+	transform-origin: top left;
+	width: 0;
+	background: #8a3ab9;
+	content: '';
+	position: absolute;
+	z-index: -1;
+}
+
+.form-modal .login-option:hover:after {
+	height: 100%;
+	width: 135%;
+}
+
+.form-modal .login , .form-modal .signup {
+	background: #2b8ced;
+	color: #fff;
+	text-transform: uppercase;
+}
+
+.form-toggle {
+	position: relative;
+	width: 100%;
+	height: auto;
+}
+
+.form-toggle button {
+	width: 50%;
+	float: left;
+	padding: 1.5em;
+	margin-bottom: 1.5em;
+	border: none;
+	transition: 0.2s;
+	font-size: 1.1em;
+	font-weight: 600;
+	outline: none;
+	color: #FFF;
+}
+
+.form-toggle button:nth-child(1) {
+	border-top-left-radius: 10px;
+}
+
+.form-toggle button:nth-child(2) {
+	border-top-right-radius: 10px;
+}
+
+#login-toggle {
+	background: #191e22;
+}
+
+.form-modal form {
+	position: relative;
+	width:90%;
+	height:auto;
+	left:50%;
+	transform:translateX(-50%);  
+}
+
+#login-form, 
+#signup-form {
+	position: relative;
+	width: 100%;
+	height: auto;
+	padding-bottom: 1em;
+}
+
+#login-form button , #signup-form button {
+	width: 100%;
+	margin-top: 0.5em;
+	padding: 0.6em;
+}
+
+.input-container {
+	position: relative;
+	display: inline-block;
+	width: 100%;
+}
+
+.input-container.small {
+	width: calc(50% - 15px);
+	float: left;
+}
+
+.input-container.small:nth-child(1) {
+	margin-right: 30px;
+}
+
+.input-container label {
+	color: #FFF;
+	position: absolute;
+	top: 50%;
+	left: 1.4em;
+	transform: translateY(-50%);
+	color: #a5a5a5;
+	text-transform: uppercase;
+	font-weight: 500;
+	font-size: 0.8em;
+	transition: 0.4s;
+}
+
+.input-container label::-moz-selection {
+	background-color: transparent;
+}
+
+.input-container label::selection {
+	background-color: transparent;
+}
+
+.form-modal .input-container input:focus + label,
+.form-modal .input-container input:active + label {
+	color: #2b8ced;
+	top: 0;
+	background-color: #191e22;
+	padding: 2px 12px;
+	transform: translateY(0);
+}
+
+.form-modal input[type="email"],
+.form-modal input[type="text"],
+.form-modal input[type="password"] {
+	position: relative;
+	width: 100%;
+	font-size: 0.8em;
+	padding: 1.1em 1.4em;
+	padding-left: 10.6em;
+	margin-top: 0.6em;
+	margin-bottom: 0.6em;
+	border-radius: 10px;
+	border: 1.5px solid #464b50;
+	background: transparent;
+	outline: none;
+	transition: 0.4s;
+	color: #FFF;
+}
+
+.form-modal.small input[type="text"] {
+	padding-left: 8em;
+}
+
+.form-modal input[type="email"]:focus, 
+.form-modal input[type="email"]:active,
+.form-modal input[type="text"]:focus, 
+.form-modal input[type="text"]:active,
+.form-modal input[type="password"]:focus, 
+.form-modal input[type="password"]:active,
+.form-modal.small input[type="text"]:focus, 
+.form-modal.small input[type="text"]:active {
+	border-color: #2b8ced;
+	padding-left: 1.4em;
+}
+
+.form-modal input[type="email"]::-webkit-input-placeholder,
+.form-modal input[type="text"]::-webkit-input-placeholder,
+.form-modal input[type="password"]::-webkit-input-placeholder {
+	color: #a5a5a5;
+}
+
+
+.form-modal p {
+	font-size: 16px;
+	font-weight: 600;
+	display: inline-block;
+	float: right;
+	line-height: 2;
+}
+
+.form-modal p a {
+	color: #2b8ced;
+	text-decoration: none;
+	transition: 0.2s;
+}
+
+@media only screen and (max-width:500px) {
+	.form-modal {
+		width:100%;
+	}
+}
+
+@media only screen and (max-width:400px) {
+	i {
+		display: none!important;
+	}
+}
+
+.checkbox {
+	padding: 5px;
+	position: relative;
+	display: inline-block;
+}
+
+.checkbox input[type=checkbox] {
+	opacity: 0;
+	display: none;
+}
+
+.checkbox label:before {
+	content: "";
+	border-radius: 3px;
+	display: inline-block;
+	position: absolute;
+	width: 17px;
+	height: 17px;
+	left: 0;
+	border: 1.5px solid #2b8ced;
+	background-color: transparent;
+	text-align: center;
+	line-height: 17px;
+	-webkit-transition: border 0.15s ease-in-out;
+	-o-transition: border 0.15s ease-in-out;
+	transition: border 0.15s ease-in-out;
+}
+
+.checkbox input[type=checkbox]:checked + label:before {
+	content: "\2714";
+	color: #fff;
+	font-size: 12px;
+	position: absolute;
+	vertical-align: -50%;
+	font-size: 12px;
+	background: #2b8ced;
+}
+
+.checkbox label {
+	padding-left: 22px;
+	font-weight: normal;
+	cursor: pointer;
+	text-transform: none;
+	color: #FFF;
+	margin-bottom: 0;
+	font-size: 14px;
+}
+
+.checkbox label::-moz-selection {
+	background-color: transparent;
+}
+
+.checkbox label::selection {
+	background-color: transparent;
+}
+
+.checkbox label a {
+	text-decoration: none;
+	color: #4e9de6;
+}
+
+.extra-settings {
+	margin: 13px 0;
+}
+
+hr {
+	margin: 30px 0;
+	border-color: rgba(255, 255, 255, 0.3);
+}
+
+.or-container {
+	position: relative;
+}
+
+.or {
+	color: #FFF;
+	font-size: 14px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	background-color: #191e22;
+	padding: 2px 18px;
+}

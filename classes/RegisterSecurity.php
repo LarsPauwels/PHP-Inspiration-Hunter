@@ -8,54 +8,55 @@
 	class RegisterSecurity extends LoginSecurity {
 
 		public function canRegister($firstname, $lastname, $username, $email, $pw1, $pw2) {
-			$_SESSION["errors"] = "";
+			$_SESSION["errors"]["title"] = "Registration Failed:";
+			$_SESSION["errors"]["message"] = "";
 
 			// Check if fields are empty
 			if (!$this->emptyFields($firstname, $lastname, $username, $email, $pw1, $pw2)) {
-				$_SESSION["errors"] .= "<li>All fields are required to fill in!</li>";
+				$_SESSION["errors"]["message"] .= "<li>All fields are required to fill in!</li>";
 			}
 
 			// Check if email is valid
 			if (!$this->validEmail($email)) {
-				$_SESSION["errors"] .= "<li>Your email is not a valid one!</li>";
+				$_SESSION["errors"]["message"] .= "<li>Your email is not a valid one!</li>";
 			}
 
 			// Check if username already exists
 			if (!$this->usernameExists($username)) {
-				$_SESSION["errors"] .= "<li>This username is already in use!</li>";
+				$_SESSION["errors"]["message"] .= "<li>This username is already in use!</li>";
 			}
 
 			// Check if email already exists
 			if (!$this->emailExists($email)) {
-				$_SESSION["errors"] .= "<li>This email is already in use!</li>";
+				$_SESSION["errors"]["message"] .= "<li>This email is already in use!</li>";
 			}
 
 			// Check if password contains 7 characters
 			if (!$this->isPasswordSecure($pw1)) {
-				$_SESSION["errors"] .= "<li>Your password needs to contain at least 7 characters!</li>";
+				$_SESSION["errors"]["message"] .= "<li>Your password needs to contain at least 7 characters!</li>";
 			}
 
 			// Check if password is same as confirm password
 			if (!$this->isEqual($pw1, $pw2)) {
-				$_SESSION["errors"] .= "<li>Your confirm password doesn't match with your password!</li>";
+				$_SESSION["errors"]["message"] .= "<li>Your confirm password doesn't match with your password!</li>";
 			}
 
 			// Check if password contains at least one number
 			if (!$this->containNumber($pw1)) {
-		        $_SESSION["errors"] .= "<li>Password must include at least one number!</li>";
+		        $_SESSION["errors"]["message"] .= "<li>Password must include at least one number!</li>";
 		    }
 
 		    // Check if password contains at least one letter
 		    if (!$this->containLetter($pw1)) {
-		    	$_SESSION["errors"] .= "<li>Password must include at least one letter!</li>";
+		    	$_SESSION["errors"]["message"] .= "<li>Password must include at least one letter!</li>";
 		    }
 
 		    // Check if password contains at least one uppercase 
 		    if (!$this->containUppercase($pw1)) {
-		    	$_SESSION["errors"] .= "<li>Password must include at least one uppercase!</li>";
+		    	$_SESSION["errors"]["message"] .= "<li>Password must include at least one uppercase!</li>";
 		    }
 
-			if (!empty($_SESSION["errors"])) {
+			if (!empty($_SESSION["errors"]["message"])) {
 				return false;
 			}
 			return true;

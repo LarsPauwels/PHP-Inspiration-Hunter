@@ -1,0 +1,75 @@
+#message {
+    position: fixed;
+    top: 10%;
+    right: -300px;
+    width: 300px;
+    z-index: 1000;
+    animation: fadeIn 1.5s forwards, fadeOut 1.5s forwards 6.5s;
+    animation-iteration-count: 1;
+}
+
+@keyframes fadeIn {
+    from {right: -300px;}
+    to {right: 0;}
+}
+
+@keyframes fadeOut {
+    from {right: 0;}
+    to {right: -300px;}
+}
+
+#loader-message {
+    background-color: #2b8ced;
+    border-radius: 2px 2px 0 0;
+    height: 3px;
+    width: 0;
+    animation: loader 5s forwards 1.5s linear;
+    animation-iteration-count: 1;
+}
+
+@keyframes loader {
+    from {width: 0;}
+    to {width: 100%;}
+}
+
+#inner-message {
+    background-color: #1d2127;
+    padding: 13px 10px 13px 50px;
+    color: #fff;
+    border-radius: 0 0 2px 2px;
+    line-height: 17px;
+    position: relative;
+}
+
+#inner-message .fa-check {
+    position: absolute;
+    font-size: 22px;
+    left: 12px;
+    top: 13px;
+}
+
+#inner-message #error {
+	position: absolute;
+    transform: translateY(-50%);
+    font-size: 25px;
+    left: 12px;
+    top: 50%;
+    color: red;
+}
+
+#inner-message h2 {
+    font-size: 16px;
+    font-weight: normal;
+    margin: 0 0 7px;
+}
+
+
+#inner-message ul {
+	list-style-type: disc;
+	margin-left: 18px;
+}
+
+#inner-message ul li {
+    font-size: 12px;
+    list-style-type: disc;
+}

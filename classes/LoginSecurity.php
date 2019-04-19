@@ -8,17 +8,18 @@
 	class LoginSecurity {
 		/* VALIDATE LOGIN FORM */
 		public function canLogin($email, $pw) {
-			$_SESSION["errors"] = "";
+			$_SESSION["errors"]["title"] = "Logging in Failed:";
+			$_SESSION["errors"]["message"] = "";
 
 			if (!$this->emptyFields($email, $pw)) {
-				$_SESSION["errors"] .= "<li>All fields are required to fill in!</li>";
+				$_SESSION["errors"]["message"] .= "<li>All fields are required to fill in!</li>";
 			}
 
 			if (!$this->validEmail($email)) {
-				$_SESSION["errors"] .= "<li>Your email is not a valid one!</li>";
+				$_SESSION["errors"]["message"] .= "<li>Your email is not a valid one!</li>";
 			}
 
-			if (!empty($_SESSION["errors"])) {
+			if (!empty($_SESSION["errors"]["message"])) {
 				return false;
 			}
 			return true;
