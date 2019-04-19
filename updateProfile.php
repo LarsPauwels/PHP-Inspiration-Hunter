@@ -26,7 +26,9 @@
     // update password part
     if (!empty($_POST["updatePassword"])) {
         $user = new User();
+        $user->setCurrentPassword($_POST["currentPassword"]);
         $user->setPassword($_POST["newPassword"]);
+        $user->setConfirmPassword($_POST["confirmNewPassword"]);
 
         if ($user->updatePassword()) {
             $_SESSION["user"] = $user->getEmail();

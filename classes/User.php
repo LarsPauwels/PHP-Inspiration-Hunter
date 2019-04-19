@@ -12,6 +12,7 @@
 		private $lastname;
 		private $username;
 		private $description;
+		private $currentPassword;
 
 	    /**
 	     * @return mixed
@@ -137,6 +138,24 @@
 	        $this->description = $description;
 
 	        return $this;
+		}
+		
+		/**
+	     * @return mixed
+	     */
+	    public function getCurrentPassword() {
+	        return $this->currentPassword;
+	    }
+
+	    /**
+	     * @param mixed $currentPassword
+	     *
+	     * @return self
+	     */
+	    public function setCurrentPassword($currentPassword) {
+	        $this->currentPassword = $currentPassword;
+
+	        return $this;
 	    }
 
 	    /**
@@ -254,11 +273,11 @@
 					$statement->execute();
 					$user = $statement->fetch(PDO::FETCH_ASSOC);
 
-					print_r($user);
-					$pwuser = $user["password"];
+					// print_r($user);
+					// $pwuser = $user["password"];
 					$emailUser = $user["email"];
-					print_r($pwuser);
-					print_r($emailUser);
+					// print_r($pwuser);
+					// print_r($emailUser);
 
 					// check if entered password is the right password
 					if (LoginSecurity::pwVerify($this->password, $user["password"])) {
@@ -282,7 +301,33 @@
 
 		public function updatePassword() {
 			try {
-				$security = new RegisterSecurity;
+				
+				$security = new UpdatePassword;
+				if ($security->canUpdatePassword($this->currentPassword, $this->password, $this->confirmPassword)) {
+					$conn = DB::getInstance();
+					$statement = $conn->prepare("SELECT * FROM users WHERE id = 2");
+					$statement->execute();
+					$user = $statement->fetch(PDO::FETCH_ASSOC);
+
+					print_r($user);
+					$emailUser = $user["email"];
+
+					//Hash password
+			    	$password = RegisterSecurity::pwHash($this->password);
+
+					if (LoginSecurity::pwVerify($this->currentPassword, $user["password"])) {
+						$stmnt = $conn->prepare("UPDATE users SET password = '$password' WHERE email = '$emailUser'");
+						$stmnt->bindParam(":password", $password);
+						$stmnt->execute();
+						return true;
+					}
+
+					$_SESSION["errors"] = "Error: Something went wrong! Try again later.";
+					return false;
+
+				}
+
+
 			} catch (Throwable $t) {
 				$_SESSION["errors"] = "Error: " . $t;
 				return false;
