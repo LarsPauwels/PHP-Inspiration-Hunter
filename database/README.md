@@ -10,4 +10,7 @@
 `SERVER = localhost;`<br>
 
 ## Database Structuur:
+New screenshot
+![git-it](https://github.com/LarsPauwels/PHP-Inspiration-Hunter/blob/master/database/overview.jpg)
+<br>
 ![git-it](https://github.com/LarsPauwels/PHP-Inspiration-Hunter/blob/master/database/screenshot.jpg)
