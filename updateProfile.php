@@ -6,6 +6,7 @@
     if (!empty($_POST["updateDescription"])) {
         $user = new User();
         $user->setDescription($_POST["description"]);
+        $_SESSION["username"] = $user->getDescription();
 
         if ($user->updateDescription()) {
             $_SESSION["user"] = $user->getEmail();
@@ -17,6 +18,7 @@
         $user = new User();
         $user->setEmail($_POST["email"]);
         $user->setPassword($_POST["password"]);
+        $_SESSION["username"] = $user->getDescription();
 
         if ($user->updateEmail()) {
             $_SESSION["user"] = $user->getEmail();

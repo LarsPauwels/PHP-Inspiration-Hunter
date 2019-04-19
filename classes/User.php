@@ -156,8 +156,8 @@
 	        $this->currentPassword = $currentPassword;
 
 	        return $this;
-	    }
-
+		}
+		
 	    /**
 	     * @return boolean
 	     * true if logging in is successful
@@ -235,6 +235,21 @@
 
 		public function updateDescription() {
 			try {
+				
+				// $_SESSION["user"] = 1;
+				// echo $_SESSION["user"];
+				// echo $_SESSION["username"];
+
+				// $username = $this->username;
+				// $_SESSION["user"] = "zefrefrePalmboom333zda";
+
+				// $_SESSION["username"] = $this->username;
+				// $userEmail = $_SESSION["user"];
+				// echo $_SESSION["username"];
+				// echo $_SESSION["username"];
+				// echo $_SESSION["user"];
+				// var_dump($_SESSION); 
+			
 				$conn = DB::getInstance();
 
 				$statement = $conn->prepare("UPDATE users SET description = :description WHERE id = 2");
@@ -242,6 +257,7 @@
 				$user = $statement->fetch(PDO::FETCH_ASSOC);
 
 				if ($statement->execute()) {
+					$_SESSION["errors"] = "Description succesfully updated";
 					return true;
 				}
 
@@ -260,9 +276,10 @@
 			try {
 				$security = new LoginSecurity;
 
+				// var_dump($_SESSION);
+
 				// check if email is a valid email and no empty fields allowed
 				if ($security->canLogin($this->email, $this->password)) {
-
 					// Connect to db
 					$conn = DB::getInstance();
 
@@ -284,6 +301,7 @@
 						$stmnt = $conn->prepare("UPDATE users SET email = :email WHERE email = '$emailUser'");
 						$stmnt->bindParam(":email", $this->email);
 						$stmnt->execute();
+						$_SESSION["errors"] = "Email succesfully updated";
 						return true;
 					}
 
@@ -309,7 +327,7 @@
 					$statement->execute();
 					$user = $statement->fetch(PDO::FETCH_ASSOC);
 
-					print_r($user);
+					// print_r($user);
 					$emailUser = $user["email"];
 
 					//Hash password
@@ -319,6 +337,7 @@
 						$stmnt = $conn->prepare("UPDATE users SET password = '$password' WHERE email = '$emailUser'");
 						$stmnt->bindParam(":password", $password);
 						$stmnt->execute();
+						$_SESSION["errors"] = "Password succesfully updated";
 						return true;
 					}
 
