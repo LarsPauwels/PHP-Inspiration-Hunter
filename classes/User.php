@@ -232,20 +232,22 @@
 			}
 		}
 		
+		/**
+	     * @return boolean
+	     * true if updaten email is successful
+	     * false if updaten email is unsuccessful 
+	     */
 		public function updateEmail() {
 			try {
 				$security = new LoginSecurity;
 
-				// check if email is a valid email, no empty
+				// check if email is a valid email and no empty fields allowed
 				if ($security->canLogin($this->email, $this->password)) {
 
-					// Hash password
-					// $password = RegisterSecurity::pwHash($this->password);
-					
 					// Connect to db
 					$conn = DB::getInstance();
 
-					// Query to update user's email
+					// Query to select user
 					$statement = $conn->prepare("SELECT * FROM users WHERE id = 2");
 					// $statement->bindParam(":email", $this->email);
 					// $statement->bindParam(":password", $password);
@@ -258,8 +260,9 @@
 					print_r($pwuser);
 					print_r($emailUser);
 
+					// check if entered password is the right password
 					if (LoginSecurity::pwVerify($this->password, $user["password"])) {
-						$stmnt = $conn->prepare("UPDATE users SET email = :email WHERE id = 2");
+						$stmnt = $conn->prepare("UPDATE users SET email = :email WHERE email = '$emailUser'");
 						$stmnt->bindParam(":email", $this->email);
 						$stmnt->execute();
 						return true;
