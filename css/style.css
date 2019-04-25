@@ -83,6 +83,7 @@ header img.logo {
 	width: 150px;
 	padding: 0 15px;
 	padding-left: 32px;
+	color: #FFF;
 	outline: none;
 }
 
@@ -780,6 +781,66 @@ hr {
 	height: 1px !important;
 	margin: 9px 0;
 	overflow: hidden;
+}
+
+
+
+
+.load-more-container {
+	display: flex;
+	justify-content: center;
+	margin-top: 35px;
+}
+
+.load-more {
+	/*position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);*/
+	border-radius: 10px;
+	border: none;
+	font-weight: 600;
+	font-size: 0.8em;
+	padding: 1.2em 1em!important;
+	transition: 0.5s;
+	margin-bottom: 0.5em;
+	margin-top: 0.5em;
+	cursor: pointer;
+}
+
+.load-more {
+	width: 35% !important;
+	float: left;
+	background-color: transparent;
+	border: 1px solid #2b8ced;
+	color: #FFF;
+	text-transform: uppercase;
+	overflow: hidden;
+	position: relative;
+}
+
+.load-more i {
+	margin-right: 10px;
+	font-size: 1.5em;
+}
+
+.load-more::after {
+	height: 100%;
+	left: -35%;
+	top: 0;
+	transform: skew(50deg);
+	transition-duration: 0.6s;
+	transform-origin: top left;
+	width: 0;
+	background: #2b8ced;
+	content: '';
+	position: absolute;
+	z-index: -1;
+}
+
+.load-more:hover:after {
+	height: 100%;
+	width: 135%;
 }
 
 

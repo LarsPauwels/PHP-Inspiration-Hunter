@@ -1,9 +1,9 @@
 <?php
-	require_once("bootstrap.php");
+require_once("bootstrap.php");
 
-	if (!isset($_SESSION["user"])) {
-		header("Location: login");
-	}
+if (!isset($_SESSION["user"])) {
+	header("Location: login");
+}
 ?><!DOCTYPE html>
 <html>
 <head>
@@ -25,7 +25,7 @@
 		<div id="header-right" class="clearfix">
 			<div class="search-container">
 				<input type="text" name="search" placeholder="Search for everything" class="search">
-				<button class="fas fa-search"></button>
+				<button class="fas fa-search search-btn"></button>
 			</div>
 			<ul>
 				<li class="active extra bell-open">
@@ -148,53 +148,59 @@
 
 	<section>
 		<?php
-			foreach (Post::getPost() as $post):
-		?>
-			<article>
-				<div class="post-header">
-					<div class="user-container">
-						<div class="user" style="background-image: url(<?php echo "uploads/profile_pic/".$post["profile_pic"]; ?>);"></div>
-						<p class="name"><?php echo $post["firstname"]." ".$post["lastname"]; ?></p>
-						<span>
-							<?php echo Post::getTime($post["postTimestamp"]); ?>
-						</span>
+		foreach (Post::getPost("") as $post):
+			?>
+			<div class="posts-container">
+				<article>
+					<div class="post-header">
+						<div class="user-container">
+							<div class="user" style="background-image: url(<?php echo "uploads/profile_pic/".$post["profile_pic"]; ?>);"></div>
+							<p class="name"><?php echo $post["firstname"]." ".$post["lastname"]; ?></p>
+							<span>
+								<?php echo Post::getTime($post["postTimestamp"]); ?>
+							</span>
+						</div>
 					</div>
-				</div>
-				<div class="post-image" style="background-image: url(<?php echo "uploads/feed/".$post["image"] ?>);"></div>
-				<ul class="info">
-					<li>
-						<a href="#" class="like" data-id="<?php echo $post['postId']?>">
-							<i class="fas fa-heart <?php if(!PostLike::alreadyLiked($_SESSION['user']['id'], $post['postId'])) { echo 'already-liked'; } ?>"></i>
-						</a>
-						<span class="likes"><?php echo Post::getLikes($post['postId']); ?></span>
-					</li>
-					<li>
-						<i class="fas fa-comment"></i>
-						<span class="comments">485</span>
-					</li>
-					<li>
-						<a href="#">
-							<i class="fas fa-share-alt"></i>
-						</a>
-					</li>
-				</ul>
-				<p class="comment"><a href="#" class="username"><?php echo $post["username"]; ?></a> <?php echo $post["postDescription"]; ?></p>
-				<div class="chat">
-					<div class="load-comments" data-post="<?php echo $post['postId']?>">
-						
+					<div class="post-image" style="background-image: url(<?php echo "uploads/feed/".$post["image"] ?>);"></div>
+					<ul class="info">
+						<li>
+							<a href="#" class="like" data-id="<?php echo $post['postId']?>">
+								<i class="fas fa-heart <?php if(!PostLike::alreadyLiked($_SESSION['user']['id'], $post['postId'])) { echo 'already-liked'; } ?>"></i>
+							</a>
+							<span class="likes"><?php echo Post::getLikes($post['postId']); ?></span>
+						</li>
+						<li>
+							<i class="fas fa-comment"></i>
+							<span class="comments">485</span>
+						</li>
+						<li>
+							<a href="#">
+								<i class="fas fa-share-alt"></i>
+							</a>
+						</li>
+					</ul>
+					<p class="comment"><a href="#" class="username"><?php echo $post["username"]; ?></a> <?php echo $post["postDescription"]; ?></p>
+					<div class="chat">
+						<div class="load-comments" data-post="<?php echo $post['postId']?>">
+
+						</div>
+						<hr>
+						<input type="text" name="message" placeholder="Add a comment..." class="message" data-post="<?php echo $post['postId']; ?>">
 					</div>
-					<hr>
-					<input type="text" name="message" placeholder="Add a comment..." class="message" data-post="<?php echo $post['postId']; ?>">
-				</div>
-			</article>
-		<?php
+				</article>
+				<?php
 			endforeach;
-		?>
+			?>
+		</div>
+		<div class="load-more-container">
+			<button type="button" class="load-more"></i></i>Load More</button>
+		</div>
 	</section>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="js/post_like.js"></script>
 	<script src="js/send_comment.js"></script>
+	<script src="js/search.js"></script>
 	<script src="js/index.js"></script>
 </body>
 </html>

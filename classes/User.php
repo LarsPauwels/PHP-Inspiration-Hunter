@@ -11,6 +11,7 @@
 		private $firstname;
 		private $lastname;
 		private $username;
+		private $description;
 
 	    /**
 	     * @return mixed
@@ -121,6 +122,24 @@
 	    }
 
 	    /**
+	     * @return mixed
+	     */
+	    public function getDescription() {
+	    	return $this->description;
+	    }
+
+	    /**
+	     * @param mixed $description
+	     *
+	     * @return self
+	     */
+	    public function setDescription($description) {
+	    	$this->description = $description;
+
+	    	return $this;
+	    }
+
+	    /**
 	     * @return boolean
 	     * true if logging in is successful
 	     * false if logging in is unsuccessful 
@@ -205,6 +224,29 @@
 	    	} catch(Throwable $t) {
 	    		// If database connection fails
 	    		$_SESSION["errors"]["message"] = "<li>".$t."<li>";
+	    		return false;
+	    	}
+	    }
+
+	    public function updateDescription() {
+	    	try {
+	    		$_SESSION["errors"]["title"] = "Updated Description:";
+	    		$_SESSION["errors"]["message"] = "";
+
+	    		$conn = DB::getInstance();
+	    		$statement = $conn->prepare("UPDATE users SET description = :description WHERE id = :id");
+	    		$statement->bindParam(":id", $_SESSION["user"]["id"]);
+	    		$statement->bindParam(":description", $this->description);
+	    		$user = $statement->fetch(PDO::FETCH_ASSOC);
+
+	    		if ($statement->execute()) {
+	    			$_SESSION["errors"]["message"] = "Description succesfully updated";
+	    			return true;
+	    		}
+
+	    	} catch (Throwable $t) {
+	    		$_SESSION["errors"]["title"] = "Update Description Failed:";
+	    		$_SESSION["errors"]["message"] = "Error: " . $t;
 	    		return false;
 	    	}
 	    }
