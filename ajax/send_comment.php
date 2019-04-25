@@ -3,9 +3,9 @@
 
 	if (!empty($_POST)) {
 		$comment = new Comment();
-		$comment->setMessage($_POST["message"]);
-		$comment->setPostId($_POST["postId"]);
-		$comment->setUserId($_SESSION["user"]["id"]);
+		$comment->setMessage(htmlspecialchars($_POST["message"]));
+		$comment->setPostId(htmlspecialchars($_POST["postId"]));
+		$comment->setUserId(htmlspecialchars($_SESSION["user"]["id"]));
 
 		if ($comment->save()) {
 			$result = [

@@ -256,12 +256,16 @@
 	    	}
 	    }
 
-	    public function getPost() {
+	    public function getPost($search) {
 	    	try {
 		    	// Getting database connection in class DB
 	    		$conn = DB::getInstance();
 
-	    		$statement = $conn->prepare("SELECT *, posts.id AS postId, posts.timestamp AS postTimestamp, posts.description AS postDescription FROM posts, users WHERE posts.user_id = users.id LIMIT 20");
+	    		if (empty($search)) {
+	    			$statement = Post::getAllPosts($conn);
+	    		} else {
+	    			$statement = Post::getSearchPosts($conn, $search);
+	    		}
 	    		$statement->execute();
 	    		return $statement->fetchAll();
 	    	} catch(Throwable $t) {
@@ -269,6 +273,16 @@
 	    		$_SESSION["errors"]["message"] = "<li>".$t."<li>";
 	    		return false;
 	    	}
+	    }
+
+	    private function getSearchPosts($conn, $search) {
+	    	return $conn->prepare("SELECT *, posts.id AS postId, posts.timestamp AS postTimestamp, posts.description AS postDescription FROM posts, users WHERE posts.user_id = users.id LIKE :search LIMIT 20");
+	    	$statement->bindParam(":search", $search);
+	    	echo "test";
+	    }
+
+	    private function getAllPosts($conn) {
+	    	return $conn->prepare("SELECT *, posts.id AS postId, posts.timestamp AS postTimestamp, posts.description AS postDescription FROM posts, users WHERE posts.user_id = users.id LIMIT 20");
 	    }
 
 	    public function getTime($timestamp) {
