@@ -1,6 +1,7 @@
 <?php
 
     require_once("bootstrap.php");
+    var_dump($_SESSION);
 
     // update description part
     if (!empty($_POST["updateDescription"])) {
