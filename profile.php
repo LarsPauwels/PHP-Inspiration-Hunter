@@ -14,23 +14,15 @@
         $user = new User();
         $user->setEmail($_POST["email"]);
         $user->setPassword($_POST["password"]);
-        $_SESSION["username"] = $user->getDescription();
-
-        if ($user->updateEmail()) {
-            $_SESSION["user"] = $user->getEmail();
-        }
+        $user->updateEmail();
     }
 
         // update password part
     if (!empty($_POST["updatePassword"])) {
         $user = new User();
-        $user->setCurrentPassword($_POST["currentPassword"]);
         $user->setPassword($_POST["newPassword"]);
         $user->setConfirmPassword($_POST["confirmNewPassword"]);
-
-        if ($user->updatePassword()) {
-            $_SESSION["user"] = $user->getEmail();
-        }
+        $user->updatePassword($_POST["currentPassword"]);
     }
 
 ?><!DOCTYPE html>

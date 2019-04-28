@@ -93,35 +93,35 @@
 			return true;
 		}
 
-		private function isPasswordSecure($pw) {
+		public function isPasswordSecure($pw) {
 			if (strlen($pw) < 7) {
 				return false;
 			}
 			return true;
 		}
 
-		private function isEqual($pw1, $pw2) {
+		public function isEqual($pw1, $pw2) {
 			if ($pw1 != $pw2) {
 				return false;
 			}
 			return true;
 		}
 
-		private function containNumber($pw) {
+		public function containNumber($pw) {
 			if (!preg_match("#[0-9]+#", $pw)) {
 				return false;
 			}
 			return true;
 		}
 
-		private function containLetter($pw) {
+		public function containLetter($pw) {
 			if (!preg_match("#[a-zA-Z]+#", $pw)) {
 				return false;
 		    }
 		    return true;
 		}
 
-		private function containUppercase($pw) {
+		public function containUppercase($pw) {
 			if(!preg_match('/[A-Z]/', $pw)){
 				return false;
 			}

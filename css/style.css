@@ -531,6 +531,10 @@ article .post-header {
 	font-size: 10px;
 }
 
+.comment a {
+	color: #2b8ced;
+}
+
 .comment .username {
 	font-weight: 700;
 	color: #FFF;

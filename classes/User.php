@@ -199,6 +199,7 @@
 
 	    			//Hash password
 	    			$password = RegisterSecurity::pwHash($this->password);
+	    			$image = "standerd.jpg";
 
 	    			// Getting database connection in class DB
 	    			$conn = DB::getInstance();
@@ -210,8 +211,8 @@
 	    			$statement->bindParam(":username", $this->username);
 	    			$statement->bindParam(":email", $this->email);
 	    			$statement->bindParam(":password", $password);
-	    			$statement->bindParam(":profile_pic", "standerd.jpg");
-	    			$statement->bindParam(":background_pic", "standerd.jpg");
+	    			$statement->bindParam(":profile_pic", $image);
+	    			$statement->bindParam(":background_pic", $image);
 					// Checking if user is succesfully added to the database
 	    			if($statement->execute()) {
 						// User is successfully added => return true
@@ -230,24 +231,94 @@
 
 	    public function updateDescription() {
 	    	try {
-	    		$_SESSION["errors"]["title"] = "Updated Description:";
-	    		$_SESSION["errors"]["message"] = "";
-
 	    		$conn = DB::getInstance();
 	    		$statement = $conn->prepare("UPDATE users SET description = :description WHERE id = :id");
 	    		$statement->bindParam(":id", $_SESSION["user"]["id"]);
 	    		$statement->bindParam(":description", $this->description);
 	    		$user = $statement->fetch(PDO::FETCH_ASSOC);
-
-	    		if ($statement->execute()) {
-	    			$_SESSION["errors"]["message"] = "Description succesfully updated";
-	    			return true;
-	    		}
+				$statement->execute();
 
 	    	} catch (Throwable $t) {
-	    		$_SESSION["errors"]["title"] = "Update Description Failed:";
 	    		$_SESSION["errors"]["message"] = "Error: " . $t;
 	    		return false;
 	    	}
+	    }
+
+	    /**
+	     * @return boolean
+	     * true if updaten email is successful
+	     * false if updaten email is unsuccessful 
+	     */
+	    public function updateEmail() {
+	    	try {
+	    		$security = new LoginSecurity;
+
+				// check if email is a valid email and no empty fields allowed
+	    		if ($security->canLogin($this->email, $this->password)) {
+					// check if entered password is the right password
+	    			if ($this->checkPassword($this->password)) {
+	    				$conn = DB::getInstance();
+	    				$stmnt = $conn->prepare("UPDATE users SET email = :email WHERE id = :id");
+	    				$stmnt->bindParam(":email", $this->email);
+	    				$stmnt->bindParam(":id", $_SESSION["user"]["id"]);
+	    				$stmnt->execute();
+
+	    				return true;
+	    			}
+	    			$_SESSION["errors"]["message"] = "Error: Something went wrong! Try again later.";
+	    			return false;
+	    		}
+
+	    	} catch (Throwable $t) {
+	    		$_SESSION["errors"]["message"] = "Error: " . $t;
+	    		return false;
+	    	}
+	    }
+
+	    public function updatePassword($currentPassword) {
+	    	try {
+	    		$security = new UpdatePassword;
+	    		if ($security->canUpdatePassword($this->password, $this->confirmPassword, $currentPassword)) {
+
+	    			if ($this->checkPassword($this->password)) {
+	    				if (LoginSecurity::pwVerify($currentPassword, $this->password)) {
+				    		//Hash password
+	    					$password = RegisterSecurity::pwHash($this->password);
+
+	    					$conn = DB::getInstance();
+	    					$stmnt = $conn->prepare("UPDATE users SET password = :password WHERE id = :id");
+	    					$stmnt->bindParam(":password", $this->$password);
+	    					$stmnt->bindParam(":id", $_SESSION["user"]["id"]);
+	    					$stmnt->execute();
+
+	    					return true;
+	    				}
+	    				$_SESSION["errors"]["message"] = "You can't have the same password as your old one.";
+	    				return false;
+	    			}
+
+	    			$_SESSION["errors"]["message"] = "Error: Something went wrong! Try again later.";
+	    			return false;
+	    		}
+	    	} catch (Throwable $t) {
+	    		$_SESSION["errors"]["message"] = "Error: " . $t;
+	    		return false;
+	    	}
+	    }
+
+	    private function checkPassword($pw) {
+			// Connect to db
+	    	$conn = DB::getInstance();
+
+			// Query to select user
+	    	$statement = $conn->prepare("SELECT password FROM users WHERE id = :id");
+	    	$statement->bindParam(":id", $_SESSION["user"]["id"]);
+	    	$statement->execute();
+	    	$user = $statement->fetch(PDO::FETCH_ASSOC);
+
+	    	if (LoginSecurity::pwVerify($pw, $user["password"])) {
+	    		return true;
+	    	}
+	    	return false;
 	    }
 	}

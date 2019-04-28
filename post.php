@@ -1,16 +1,21 @@
 <?php
 	require_once("bootstrap.php");
-	if (!empty($_POST)) {
-		$post = new Post();
-		$post->setTitle($_POST["title"]);
-		$post->setDescription($_POST["description"]);
-		$post->setCountry($_POST["country"]);
-		$post->setStreetname($_POST["streetname"]);
-		$post->setHouseNumber($_POST["houseNumber"]);
+	if (isset($_SESSION["path"])) {
+		if (!empty($_POST)) {
+			$upload = new UploadPost();
+			$upload->setTitle($_POST["title"]);
+			$upload->setDescription($_POST["description"]);
+			$upload->setCountry($_POST["country"]);
+			$upload->setStreetname($_POST["streetname"]);
+			$upload->setHouseNumber($_POST["houseNumber"]);
 
-		if($post->checkPost()) {
-			$post->uploadToDatabase($_SESSION["path"]);
+			if($upload->checkPost()) {
+				$upload->uploadToDatabase($_SESSION["path"]);
+				unset($_SESSION["path"]);
+			}
 		}
+	} else {
+		header("Location: upload");
 	}
 ?><!DOCTYPE html>
 <html>
