@@ -47,7 +47,7 @@
         }
 
         private function emptyFields($pw1, $pw2, $pw3) {
-			if (empty($username) || empty($lastname) || empty($firstname) || empty($email) || empty($pw1) || empty($pw2)) {
+			if (empty($pw1) || empty($pw2) || empty($pw3)) {
 				return false;
 			}
 			return true;
