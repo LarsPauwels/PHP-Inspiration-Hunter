@@ -22,7 +22,8 @@
         $user = new User();
         $user->setPassword($_POST["newPassword"]);
         $user->setConfirmPassword($_POST["confirmNewPassword"]);
-        $user->updatePassword($_POST["currentPassword"]);
+        $user->setCurrentPassword($_POST["currentPassword"]);
+        $user->updatePassword();
     }
 
 ?><!DOCTYPE html>
