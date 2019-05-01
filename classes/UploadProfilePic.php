@@ -1,7 +1,7 @@
 <?php
 
     class UploadProfilePic extends UploadPost {
-        private $file;
+		private $file;
 
         /**
 	     * @return mixed
@@ -19,7 +19,8 @@
 	    	$this->file = $file;
 
 	    	return $this;
-	    }
+		}
+
         /**
 	     * @return boolean
 	     * true if check of file is successful
@@ -27,11 +28,9 @@
 	     */
 
 	    public function checkFile() {
-            echo "test2";
 	    	$_SESSION["errors"]["title"] = "Uploading Failed:";
 	    	$_SESSION["errors"]["message"] = "";
 			$details = $this->getFileDetails();
-			var_dump($details);
 
 	    	if (!$this->checkExtension($details["fileName"])) {
 	    		$_SESSION["errors"]["message"] .= "<li>You cannot upload this type of file!</li>";
@@ -46,8 +45,7 @@
 	    	}
 
 	    	if(empty($_SESSION["errors"]["message"])) {
-				echo "test3";
-	    		$this->uploadFile($details);
+				$this->uploadFile($details);
 	    		return true;
 	    	}
 	    	return false;
@@ -103,11 +101,16 @@
 	    	return strtolower(end($fileExt));
 	    }
 
-	    private function uploadFile($details) {
+	    protected function uploadFile($details) {
 	    	//Give the uploaded file an unique number so it doesn't get deleted if someone uploads file with same name and ext
-	    	$fileNameNew = $this->changeFileName($details["fileName"]);
+			$fileNameNew = $this->changeFileName($details["fileName"]);
 	    	$fileDestination = 'uploads/profile_pic/'.$fileNameNew;
 	    	$_SESSION["path"] = $fileDestination;
-	    	move_uploaded_file($details["fileTmpName"], $fileDestination);
-	    }
+			move_uploaded_file($details["fileTmpName"], $fileDestination);
+
+			$conn = DB::getInstance();
+			$statement = $conn->prepare("UPDATE users SET profile_pic = '$fileNameNew' WHERE id = :id");
+	    	$statement->bindParam(":id", $_SESSION["user"]["id"]);
+	    	$statement->execute();
+		}
     }

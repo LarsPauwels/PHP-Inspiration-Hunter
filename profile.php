@@ -4,9 +4,7 @@
 
     // upload profile picture part
     if (!empty($_POST["profilePic"])) {
-        echo "test1";
         $upload = new UploadProfilePic();
-        var_dump($_FILES);
         $upload->setFile($_FILES["profilePic"]);
 		$upload->checkFile();
 	}
