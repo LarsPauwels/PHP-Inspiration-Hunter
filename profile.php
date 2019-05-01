@@ -2,14 +2,23 @@
 
     require_once("bootstrap.php");
 
-        // update description part
+    // upload profile picture part
+    if (!empty($_POST["profilePic"])) {
+        echo "test1";
+        $upload = new UploadProfilePic();
+        var_dump($_FILES);
+        $upload->setFile($_FILES["profilePic"]);
+		$upload->checkFile();
+	}
+
+    // update description part
     if (!empty($_POST["updateDescription"])) {
         $user = new User();
         $user->setDescription($_POST["description"]);
         $user->updateDescription();
     }
 
-        // update email part
+    // update email part
     if (!empty($_POST["updateEmail"])) {
         $user = new User();
         $user->setEmail($_POST["email"]);
@@ -17,7 +26,7 @@
         $user->updateEmail();
     }
 
-        // update password part
+    // update password part
     if (!empty($_POST["updatePassword"])) {
         $user = new User();
         $user->setPassword($_POST["newPassword"]);
@@ -45,11 +54,18 @@
                 require_once("error.php");
             }?>
 
-            <form action="uploadpp.php" method="POST" enctype="multipart/form-data">
+            <form action="" method="POST" enctype="multipart/form-data">
                 <h2>Upload profile picture</h2>
 
-                <input type="file" name="file">
-                <button type="submit" name="submit">Upload image</button>
+                <div>
+                    <label for="profilePic">Upload profile pic</label>
+                    <input type="file" name="profilePic">
+                </div>
+
+                <div class="form__field">
+                    <input  name="profilePic" type="submit" value="Upload profile pic">
+                </div>
+
             </form>
 
             <form action="" method="POST">
