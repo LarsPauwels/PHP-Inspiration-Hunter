@@ -45,6 +45,13 @@
                 require_once("error.php");
             }?>
 
+            <form action="uploadpp.php" method="POST" enctype="multipart/form-data">
+                <h2>Upload profile picture</h2>
+
+                <input type="file" name="file">
+                <button type="submit" name="submit">Upload image</button>
+            </form>
+
             <form action="" method="POST">
                 <h2>Update description</h2>
 
