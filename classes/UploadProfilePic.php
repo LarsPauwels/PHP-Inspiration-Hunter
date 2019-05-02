@@ -101,13 +101,16 @@
 	    	return strtolower(end($fileExt));
 	    }
 
-	    protected function uploadFile($details) {
+	    private function uploadFile($details) {
 	    	//Give the uploaded file an unique number so it doesn't get deleted if someone uploads file with same name and ext
 			$fileNameNew = $this->changeFileName($details["fileName"]);
 	    	$fileDestination = 'uploads/profile_pic/'.$fileNameNew;
 	    	$_SESSION["path"] = $fileDestination;
 			move_uploaded_file($details["fileTmpName"], $fileDestination);
+			$this->uploadFileToDatabase($fileNameNew);		
+		}
 
+		private function uploadFileToDatabase($fileNameNew) {
 			$conn = DB::getInstance();
 			$statement = $conn->prepare("UPDATE users SET profile_pic = '$fileNameNew' WHERE id = :id");
 	    	$statement->bindParam(":id", $_SESSION["user"]["id"]);
