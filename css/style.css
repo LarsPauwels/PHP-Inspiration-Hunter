@@ -501,6 +501,10 @@ article .post-header {
 	margin-top: 8px;
 }
 
+.info ul {
+	width: 100%;
+}
+
 .info li {
 	display: inline-block;
 	margin-right: 8px;
@@ -513,6 +517,14 @@ article .post-header {
 
 .info li i.already-liked {
 	color: #2b8ced;
+}
+
+.info li.report {
+	float: right;
+}
+
+.info li.report i {
+	color: #ff0000;
 }
 
 .info li span {
