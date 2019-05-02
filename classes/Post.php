@@ -4,7 +4,7 @@
 	 * Uploading image to database
 	 */
 	class Post {
-		public function getPost($amount) {
+		public static function getPost($amount) {
 			try {
 		    	// Getting database connection in class DB
 	    		$conn = DB::getInstance();
@@ -26,7 +26,7 @@
 	    	}
 	    }
 
-	    public function getTime($timestamp) {
+	    public static function getTime($timestamp) {
 	    	$timestamp = strtotime($timestamp);
 	    	$strTime = array("second", "minute", "hour", "day", "month", "year");
 	    	$length = array("60","60","24","30","12","10");
@@ -46,7 +46,7 @@
 	    	}
 	    }
 
-	    public function searchPost($search, $amount) {
+	    public static function searchPost($search, $amount) {
 	    	try {
 		    	// Getting database connection in class DB
 	    		$conn = DB::getInstance();
@@ -69,7 +69,7 @@
 	    	}
 	    }
 
-	    public function getAmountPost() {
+	    public static function getAmountPost() {
 	    	try {
 		    	// Getting database connection in class DB
 	    		$conn = DB::getInstance();

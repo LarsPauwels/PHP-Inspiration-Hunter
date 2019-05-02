@@ -81,7 +81,7 @@
             }
 	    }
 
-	    public function getComment($postId) {
+	    public static function getComment($postId) {
 	    	try {
                 $conn = DB::getInstance();
 
@@ -97,7 +97,7 @@
             }
 	    }
 
-	    public function countComments($postId) {
+	    public static function countComments($postId) {
 	    	try {
                 $conn = DB::getInstance();
 
