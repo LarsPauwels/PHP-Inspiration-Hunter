@@ -2,10 +2,10 @@
 	require_once("bootstrap.php");
 	if (!empty($_POST)) {
 		// Start new class user
-		$post = new Post();
+		$upload = new UploadPost();
 		// Send posts to class setters
-		$post->setFile($_FILES['file']);
-		if($post->checkFile()) {
+		$upload->setFile($_FILES['file']);
+		if($upload->checkFile()) {
 			header("Location: post");
 		}
 	}
@@ -81,7 +81,7 @@
 					</div>
 				</div>
 				<div class="bottom-content">
-					<button name="submit" id="btn">Send Image</button>
+					<button type="submit" name="submit" id="btn">Send Image</button>
 				</div>
 			</form>
 		</article>

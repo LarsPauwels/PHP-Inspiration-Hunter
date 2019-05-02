@@ -24,8 +24,10 @@ if (!isset($_SESSION["user"])) {
 		<img src="images/full_logo.png" class="logo">
 		<div id="header-right" class="clearfix">
 			<div class="search-container">
-				<input type="text" name="search" placeholder="Search for everything" class="search">
-				<button class="fas fa-search search-btn"></button>
+				<form action method="get">
+					<input type="text" name="q" placeholder="Search for everything" class="search" value="<?php if(isset($_GET['q'])) { echo $_GET['q']; } ?>">
+					<button class="fas fa-search search-btn"></button>
+				</form>
 			</div>
 			<ul>
 				<li class="active extra bell-open">
@@ -148,8 +150,21 @@ if (!isset($_SESSION["user"])) {
 
 	<section>
 		<?php
-		foreach (Post::getPost("") as $post):
-			?>
+			if (isset($_POST["amount"])) {
+				$amount = $_POST["amount"];
+			} else {
+				$amount = 20;
+			}
+
+			if (isset($_GET["q"]) && !empty($_GET["q"])) {
+				$posts = Post::searchPost($_GET["q"], $amount);
+			} else {
+				$posts = Post::getPost($amount);
+			}
+
+			if (!empty($posts)):
+				foreach ($posts as $post):
+		?>
 			<div class="posts-container">
 				<article>
 					<div class="post-header">
@@ -164,14 +179,14 @@ if (!isset($_SESSION["user"])) {
 					<div class="post-image" style="background-image: url(<?php echo "uploads/feed/".$post["image"] ?>);"></div>
 					<ul class="info">
 						<li>
-							<a href="#" class="like" data-id="<?php echo $post['postId']?>">
-								<i class="fas fa-heart <?php if(!PostLike::alreadyLiked($_SESSION['user']['id'], $post['postId'])) { echo 'already-liked'; } ?>"></i>
+							<a href="#" data-id="<?php echo $post['postId']?>">
+								<i class="fas fa-heart like <?php if(!LikePost::alreadyLiked($_SESSION['user']['id'], $post['postId'])) { echo 'already-liked'; } ?>"></i>
 							</a>
-							<span class="likes"><?php echo Post::getLikes($post['postId']); ?></span>
+							<span class="likes"><?php echo LikePost::getLikes($post['postId']); ?></span>
 						</li>
 						<li>
 							<i class="fas fa-comment"></i>
-							<span class="comments">485</span>
+							<span class="comments"><?php echo CommentPost::countComments($post['postId']); ?></span>
 						</li>
 						<li>
 							<a href="#">
@@ -185,21 +200,38 @@ if (!isset($_SESSION["user"])) {
 
 						</div>
 						<hr>
-						<input type="text" name="message" placeholder="Add a comment..." class="message" data-post="<?php echo $post['postId']; ?>">
+						<div class="message-container">
+							<input type="text" name="message" placeholder="Add a comment..." class="message" data-post="<?php echo $post['postId']; ?>">
+							<i class="fas fa-paper-plane"></i>
+						</div>
 					</div>
 				</article>
-				<?php
-			endforeach;
+				</div>
+			<?php
+				endforeach;
+					if(sizeof($posts) < Post::getAmountPost()[0]):
 			?>
-		</div>
-		<div class="load-more-container">
-			<button type="button" class="load-more"></i></i>Load More</button>
-		</div>
+				<div class="load-more-container">
+					<button type="button" class="load-more">Load More</button>
+				</div>
+			<?php
+					endif;
+				else:
+			?>
+				<div class="empty-state">
+					<img src="images/empty.png">
+					<h1>No entry found!</h1>
+					<p>There are no posts with this tag. So this tag can be for you alloon. <a href="upload">Wan't to use it?</a></p>
+				</div>
+			<?php
+				endif;
+			?>
 	</section>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="js/post_like.js"></script>
-	<script src="js/send_comment.js"></script>
+	<script src="js/like_post.js"></script>
+	<script src="js/load_more.js"></script>
+	<script src="js/comment_post.js"></script>
 	<script src="js/search.js"></script>
 	<script src="js/index.js"></script>
 </body>

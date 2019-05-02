@@ -531,6 +531,10 @@ article .post-header {
 	font-size: 10px;
 }
 
+.comment a {
+	color: #2b8ced;
+}
+
 .comment .username {
 	font-weight: 700;
 	color: #FFF;
@@ -564,6 +568,32 @@ hr {
 	border: none;
 	height: 1px;
 	width: 100%;
+}
+
+.message-container {
+	position: relative;
+}
+
+.message-btn {
+	border-radius: 5px;
+	background-color: #2b8ced;
+	display: inline-block;
+	padding: 8px 10px;
+	cursor: pointer;
+}
+
+.message-container i {
+	color: #FFF;
+	font-size: 16px;
+	position: absolute;
+	right: 15px;
+	top: 50%;
+	transform: translateY(-50%);
+	cursor: pointer;
+}
+
+.message-container i:hover {
+	color: #2b8ced;
 }
 
 .chat .message {
@@ -620,6 +650,41 @@ hr {
 	color: #FFF;
 	font-size: 18px;
 	font-family: Raleway;
+}
+
+
+
+
+.empty-state {
+	text-align: center;
+}
+
+.empty-state img {
+	width: 50%;
+	animation: empty 3s alternate infinite linear;
+}
+
+@keyframes empty {
+    from { transform: translate(0,  0px); }
+    65%  { transform: translate(0, 15px); }
+    to   { transform: translate(0, -0px); }
+}
+
+.empty-state h1 {
+	color: #FFF;
+	font-size: 40px;
+	font-family: Raleway;
+	margin-bottom: 12px;
+}
+
+.empty-state p {
+	color: #FFF;
+	font-size: 16px;
+	font-family: Raleway;
+}
+
+.empty-state a {
+	color: #2b8ced;
 }
 
 
@@ -793,22 +858,6 @@ hr {
 }
 
 .load-more {
-	/*position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);*/
-	border-radius: 10px;
-	border: none;
-	font-weight: 600;
-	font-size: 0.8em;
-	padding: 1.2em 1em!important;
-	transition: 0.5s;
-	margin-bottom: 0.5em;
-	margin-top: 0.5em;
-	cursor: pointer;
-}
-
-.load-more {
 	width: 35% !important;
 	float: left;
 	background-color: transparent;
@@ -817,6 +866,15 @@ hr {
 	text-transform: uppercase;
 	overflow: hidden;
 	position: relative;
+	border-radius: 10px;
+	font-weight: 600;
+	font-size: 0.8em;
+	padding: 1.2em 1em!important;
+	transition: 0.5s;
+	margin-bottom: 0.5em;
+	margin-top: 0.5em;
+	cursor: pointer;
+	outline: none;
 }
 
 .load-more i {

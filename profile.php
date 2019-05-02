@@ -2,35 +2,35 @@
 
     require_once("bootstrap.php");
 
-        // update description part
+    // upload profile picture part
+    if (!empty($_POST["profilePic"])) {
+        $upload = new UploadProfilePic();
+        $upload->setFile($_FILES["profilePic"]);
+		$upload->checkFile();
+	}
+
+    // update description part
     if (!empty($_POST["updateDescription"])) {
         $user = new User();
         $user->setDescription($_POST["description"]);
         $user->updateDescription();
     }
 
-        // update email part
+    // update email part
     if (!empty($_POST["updateEmail"])) {
         $user = new User();
         $user->setEmail($_POST["email"]);
         $user->setPassword($_POST["password"]);
-        $_SESSION["username"] = $user->getDescription();
-
-        if ($user->updateEmail()) {
-            $_SESSION["user"] = $user->getEmail();
-        }
+        $user->updateEmail();
     }
 
-        // update password part
+    // update password part
     if (!empty($_POST["updatePassword"])) {
         $user = new User();
-        $user->setCurrentPassword($_POST["currentPassword"]);
         $user->setPassword($_POST["newPassword"]);
         $user->setConfirmPassword($_POST["confirmNewPassword"]);
-
-        if ($user->updatePassword()) {
-            $_SESSION["user"] = $user->getEmail();
-        }
+        $user->setCurrentPassword($_POST["currentPassword"]);
+        $user->updatePassword();
     }
 
 ?><!DOCTYPE html>
@@ -51,6 +51,20 @@
             <?php if(!empty($_SESSION["errors"]["message"])) {
                 require_once("error.php");
             }?>
+
+            <form action="" method="POST" enctype="multipart/form-data">
+                <h2>Upload profile picture</h2>
+
+                <div>
+                    <label for="profilePic">Upload profile pic</label>
+                    <input type="file" name="profilePic">
+                </div>
+
+                <div class="form__field">
+                    <input  name="profilePic" type="submit" value="Upload profile pic">
+                </div>
+
+            </form>
 
             <form action="" method="POST">
                 <h2>Update description</h2>

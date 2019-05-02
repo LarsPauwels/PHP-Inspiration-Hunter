@@ -1,53 +1,59 @@
 <?php
-	require_once('database/settings.php');
+	require_once("../bootstrap.php");
 
-	$amountNew = $_POST["amountNew"];
-	$filterNew = $_POST["filterNew"];
+	if (!empty($_POST)) {
+		$post = new Post();
 
-	$con=mysqli_connect($server, $user, $password, $databank);
-	if (mysqli_connect_errno()) {
-	    $bericht = "Failed to connect to MySQL: " . mysqli_connect_error();
-	}
+		if (isset($_GET["q"]) && !empty($_GET["q"])) {
+			$posts = Post::searchPost($_GET["q"], 1);
+		} else {
+			$posts = Post::getPost($_POST["amount"]);
+		}
 
-	$result = mysqli_query($con,"SELECT * FROM `items` WHERE class LIKE '%$filterNew%' ORDER BY `orderDate` DESC LIMIT $amountNew");
-
-	$results = mysqli_query($con,"SELECT * FROM `items` WHERE class LIKE '%$filterNew%'");
-
-	$rowcount = mysqli_num_rows($results);
-	if ($amountNew >= $rowcount) {
-		echo "
-			<style>
-				#load-more {
-					display: none !important;
-				}
-			</style>
-		";
-	} else {
-		echo "
-			<style>
-				#load-more {
-					display: block !important;
-				}
-			</style>
-		";
-	}
-
-	while($row = mysqli_fetch_array($result)) {
-		echo "
-			<div class='project ".$row['class']."' data-id=". $row["id"] .">
-				<div class='project-img' style='background-image: url(".$row['img'].");'>
+		if (!empty($posts)) {
+			foreach ($posts as $post) {
+		?>
+			<article>
+				<div class="post-header">
+					<div class="user-container">
+						<div class="user" style="background-image: url(<?php echo "uploads/profile_pic/".$post["profile_pic"]; ?>);"></div>
+						<p class="name"><?php echo $post["firstname"]." ".$post["lastname"]; ?></p>
+						<span>
+							<?php echo Post::getTime($post["postTimestamp"]); ?>
+						</span>
+					</div>
 				</div>
-				<div class='info'>
-					<span data-id=". $row["id"] .">
-						".$row['title']."
-					</span>
-					<p>
-						".$row['skills']."
-					</p>
-				</div>
-			</div>
-		";
-	}
-?>
+				<div class="post-image" style="background-image: url(<?php echo "uploads/feed/".$post["image"] ?>);"></div>
+				<ul class="info">
+					<li>
+						<a href="#" class="like" data-id="<?php echo $post['postId']?>">
+							<i class="fas fa-heart <?php if(!LikePost::alreadyLiked($_SESSION['user']['id'], $post['postId'])) { echo 'already-liked'; } ?>"></i>
+						</a>
+						<span class="likes"><?php echo LikePost::getLikes($post['postId']); ?></span>
+					</li>
+					<li>
+						<i class="fas fa-comment"></i>
+						<span class="comments"><?php echo CommentPost::countComments($post['postId']); ?></span>
+					</li>
+					<li>
+						<a href="#">
+							<i class="fas fa-share-alt"></i>
+						</a>
+					</li>
+				</ul>
+				<p class="comment"><a href="#" class="username"><?php echo $post["username"]; ?></a> <?php echo $post["postDescription"]; ?></p>
+				<div class="chat">
+					<div class="load-comments" data-post="<?php echo $post['postId']?>">
 
-<script src="js/portfolio.js"></script>
+					</div>
+					<hr>
+					<div class="message-container">
+						<input type="text" name="message" placeholder="Add a comment..." class="message" data-post="<?php echo $post['postId']; ?>">
+						<i class="fas fa-paper-plane"></i>
+					</div>
+				</div>
+			</article>
+		<?php
+			}
+		}
+	}
