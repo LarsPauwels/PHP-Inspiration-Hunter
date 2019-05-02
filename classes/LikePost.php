@@ -87,7 +87,7 @@
             return false;
         }
         
-		public function getLikes($id){
+		public static function getLikes($id){
 	    	$conn = Db::getInstance();
 	    	$statement = $conn->prepare("SELECT count(*) AS count FROM likes_posts where post_id = :postid");
 	    	$statement->bindValue(":postid", $id);

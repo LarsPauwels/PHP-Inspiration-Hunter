@@ -3,7 +3,7 @@
 	 * 
 	 */
 	class Hashtags {
-		public function getTags($result, $name) {
+		public static function getTags($result, $name) {
 	    	for ($i=0; $i < count($result); $i++) {
 	    		$specialChars = $result[$i][$name];
 	    		preg_match_all('/#(\w+)/', $specialChars, $matches);

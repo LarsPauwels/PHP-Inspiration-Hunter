@@ -193,6 +193,11 @@ if (!isset($_SESSION["user"])) {
 								<i class="fas fa-share-alt"></i>
 							</a>
 						</li>
+						<li class="report">
+							<a href="#">
+								<i class="fas fa-flag"></i>
+							</a>
+						</li>
 					</ul>
 					<p class="comment"><a href="#" class="username"><?php echo $post["username"]; ?></a> <?php echo $post["postDescription"]; ?></p>
 					<div class="chat">
