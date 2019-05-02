@@ -150,11 +150,18 @@ if (!isset($_SESSION["user"])) {
 
 	<section>
 		<?php
-			if (isset($_GET["q"])) {
-				$posts = Post::searchPost($_GET["q"]);
+			if (isset($_POST["amount"])) {
+				$amount = $_POST["amount"];
 			} else {
-				$posts = Post::getPost();
+				$amount = 20;
 			}
+
+			if (isset($_GET["q"]) && !empty($_GET["q"])) {
+				$posts = Post::searchPost($_GET["q"], $amount);
+			} else {
+				$posts = Post::getPost($amount);
+			}
+
 			if (!empty($posts)):
 				foreach ($posts as $post):
 		?>
@@ -172,8 +179,8 @@ if (!isset($_SESSION["user"])) {
 					<div class="post-image" style="background-image: url(<?php echo "uploads/feed/".$post["image"] ?>);"></div>
 					<ul class="info">
 						<li>
-							<a href="#" class="like" data-id="<?php echo $post['postId']?>">
-								<i class="fas fa-heart <?php if(!LikePost::alreadyLiked($_SESSION['user']['id'], $post['postId'])) { echo 'already-liked'; } ?>"></i>
+							<a href="#" data-id="<?php echo $post['postId']?>">
+								<i class="fas fa-heart like <?php if(!LikePost::alreadyLiked($_SESSION['user']['id'], $post['postId'])) { echo 'already-liked'; } ?>"></i>
 							</a>
 							<span class="likes"><?php echo LikePost::getLikes($post['postId']); ?></span>
 						</li>
@@ -193,21 +200,37 @@ if (!isset($_SESSION["user"])) {
 
 						</div>
 						<hr>
-						<input type="text" name="message" placeholder="Add a comment..." class="message" data-post="<?php echo $post['postId']; ?>">
+						<div class="message-container">
+							<input type="text" name="message" placeholder="Add a comment..." class="message" data-post="<?php echo $post['postId']; ?>">
+							<i class="fas fa-paper-plane"></i>
+						</div>
 					</div>
 				</article>
+				</div>
 			<?php
-					endforeach;
+				endforeach;
+					if(sizeof($posts) < Post::getAmountPost()[0]):
+			?>
+				<div class="load-more-container">
+					<button type="button" class="load-more">Load More</button>
+				</div>
+			<?php
+					endif;
+				else:
+			?>
+				<div class="empty-state">
+					<img src="images/empty.png">
+					<h1>No entry found!</h1>
+					<p>There are no posts with this tag. So this tag can be for you alloon. <a href="upload">Wan't to use it?</a></p>
+				</div>
+			<?php
 				endif;
 			?>
-		</div>
-		<div class="load-more-container">
-			<button type="button" class="load-more"></i></i>Load More</button>
-		</div>
 	</section>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="js/like_post.js"></script>
+	<script src="js/load_more.js"></script>
 	<script src="js/comment_post.js"></script>
 	<script src="js/search.js"></script>
 	<script src="js/index.js"></script>

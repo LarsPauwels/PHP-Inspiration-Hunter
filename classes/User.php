@@ -12,7 +12,6 @@
 		private $lastname;
 		private $username;
 		private $description;
-		private $currentPassword;
 
 	    /**
 	     * @return mixed
@@ -136,24 +135,6 @@
 	     */
 	    public function setDescription($description) {
 	    	$this->description = $description;
-
-	    	return $this;
-			}
-			
-			/**
-	     * @return mixed
-	     */
-	    public function getCurrentPassword() {
-	    	return $this->currentPassword;
-	    }
-
-	    /**
-	     * @param mixed $currentPassword
-	     *
-	     * @return self
-	     */
-	    public function setCurrentPassword($currentPassword) {
-	    	$this->currentPassword = $currentPassword;
 
 	    	return $this;
 	    }
@@ -280,7 +261,9 @@
 	    				$stmnt = $conn->prepare("UPDATE users SET email = :email WHERE id = :id");
 	    				$stmnt->bindParam(":email", $this->email);
 	    				$stmnt->bindParam(":id", $_SESSION["user"]["id"]);
-	    				$stmnt->execute();
+	    				if ($stmnt->execute()) {
+							$this->changeSession($this->email);
+						}
 
 	    				return true;
 	    			}
@@ -294,36 +277,32 @@
 	    	}
 	    }
 
-	    public function updatePassword() {
+	    private function changeSession($email) {
+	    	$_SESSION["user"]["email"] = $email;
+	    }
+
+	    public function updatePassword($currentPassword) {
 	    	try {
-
 	    		$security = new UpdatePassword;
-	    		if ($security->canUpdatePassword($this->password, $this->confirmPassword, $this->currentPassword)) {
+	    		if ($security->canUpdatePassword($this->password, $this->confirmPassword, $currentPassword)) {
 
-	    			if ($this->checkPassword($this->currentPassword)) {
-							
-							$conn = DB::getInstance();
-							$statement = $conn->prepare("SELECT * FROM users WHERE id = :id");
-							$statement->bindParam(":id", $_SESSION["user"]["id"]);
-							$statement->execute();
-							$user = $statement->fetch(PDO::FETCH_ASSOC);
-							
-	    				if (LoginSecurity::pwVerify($this->currentPassword, $user["password"])) {
-
+	    			if ($this->checkPassword($this->password)) {
+	    				if (LoginSecurity::pwVerify($currentPassword, $this->password)) {
 				    		//Hash password
-								$password = RegisterSecurity::pwHash($this->password);
+	    					$password = RegisterSecurity::pwHash($this->password);
 
 	    					$conn = DB::getInstance();
-	    					$stmnt = $conn->prepare("UPDATE users SET password = '$password' WHERE id = :id");
-								// $stmnt->bindParam(":password", $this->password);
+	    					$stmnt = $conn->prepare("UPDATE users SET password = :password WHERE id = :id");
+	    					$stmnt->bindParam(":password", $this->$password);
 	    					$stmnt->bindParam(":id", $_SESSION["user"]["id"]);
-								$stmnt->execute();
+	    					$stmnt->execute();
 
 	    					return true;
 	    				}
 	    				$_SESSION["errors"]["message"] = "You can't have the same password as your old one.";
 	    				return false;
-						}
+	    			}
+
 	    			$_SESSION["errors"]["message"] = "Error: Something went wrong! Try again later.";
 	    			return false;
 	    		}
@@ -331,7 +310,7 @@
 	    		$_SESSION["errors"]["message"] = "Error: " . $t;
 	    		return false;
 	    	}
-			}
+	    }
 
 	    private function checkPassword($pw) {
 			// Connect to db
@@ -341,7 +320,7 @@
 	    	$statement = $conn->prepare("SELECT password FROM users WHERE id = :id");
 	    	$statement->bindParam(":id", $_SESSION["user"]["id"]);
 	    	$statement->execute();
-				$user = $statement->fetch(PDO::FETCH_ASSOC);
+	    	$user = $statement->fetch(PDO::FETCH_ASSOC);
 
 	    	if (LoginSecurity::pwVerify($pw, $user["password"])) {
 	    		return true;

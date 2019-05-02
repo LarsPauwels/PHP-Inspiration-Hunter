@@ -107,13 +107,19 @@
 	    	$fileDestination = 'uploads/profile_pic/'.$fileNameNew;
 	    	$_SESSION["path"] = $fileDestination;
 			move_uploaded_file($details["fileTmpName"], $fileDestination);
-			$this->uploadFileToDatabase($fileNameNew);		
+			$this->uploadFileToDatabase($fileNameNew);
+			$this->changeSession($fileNameNew);	
 		}
 
 		private function uploadFileToDatabase($fileNameNew) {
 			$conn = DB::getInstance();
-			$statement = $conn->prepare("UPDATE users SET profile_pic = '$fileNameNew' WHERE id = :id");
+			$statement = $conn->prepare("UPDATE users SET profile_pic = :file WHERE id = :id");
+			$statement->bindParam(":file", $fileNameNew);
 	    	$statement->bindParam(":id", $_SESSION["user"]["id"]);
 	    	$statement->execute();
+		}
+
+		private function changeSession($fileNameNew) {
+			$_SESSION["user"]["profile_pic"] = $fileNameNew;
 		}
     }

@@ -6,12 +6,26 @@ $(document).ready(function() {
 		});
 	});
 
-	$(".message").keypress(function (e) {
-		if (e.which == 13) {
-			var message = $(this).val();
-			var postId = $(this).data("post");
-			var that = $(this);
+	$("section").keypress(function(e) {
+		if (e.target.matches(".message")) {
+			if (e.which == 13) {
+				sendMessage($(e.target));
+			}
+		}
+	});
 
+	$("section").click(function(e) {
+		if (e.target.matches(".fa-paper-plane")) {
+			sendMessage($(e.target).siblings("input"));
+		}
+	});
+
+	function sendMessage(input) {
+		var message = input.val();
+		var postId = input.data("post");
+		var that = input;
+
+		if (message != "" && postId != "") {
 			$.ajax({
 				method: "POST",
 				url: "ajax/comment_post.php",
@@ -23,12 +37,12 @@ $(document).ready(function() {
 			}).done(function(res) {
 				if (res.status == "success") {
 					that.val("");
-					that.siblings(".load-comments").load("comments_post", {
+					that.parent().siblings(".load-comments").load("comments_post", {
 						postId: postId
 					});
 				}
 			});
 		}
-	});
+	}
 
 });
