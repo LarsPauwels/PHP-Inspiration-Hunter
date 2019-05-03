@@ -1,3 +1,7 @@
 $(document).ready(function() {
-    console.log("woeks");
+    $(".fa-flag").on("click", function(e) {
+        console.log("yay");
+
+        e.preventDefault();
+    });
 });
