@@ -239,5 +239,6 @@ if (!isset($_SESSION["user"])) {
 	<script src="js/comment_post.js"></script>
 	<script src="js/search.js"></script>
 	<script src="js/index.js"></script>
+	<script src="js/report.js"></script>
 </body>
 </html>
