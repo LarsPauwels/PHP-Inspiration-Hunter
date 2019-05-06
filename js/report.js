@@ -1,6 +1,7 @@
 $(document).ready(function() {
     $(".fa-flag").on("click", function(e) {
-        console.log("yay");
+        var postId = $(e.target).parent("a").data("id");
+        console.log(postId);
 
         e.preventDefault();
     });
