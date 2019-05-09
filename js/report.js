@@ -9,10 +9,18 @@ $(document).ready(function() {
             data: {
                 postId: postId
             }, 
-            dataType: "text"
+            dataType: "json"
         })
         .done(function(res) {
             console.log(res);
+            if (res.status = "success") {
+                $(".info li.report i").click(function() {
+                    $(this).parent().find(".info li.report i").css("color", "grey");
+                    $(this).css("color", "grey");
+                });
+            } else if (res.status = "error") {
+
+            }
         });
 
         e.preventDefault();
