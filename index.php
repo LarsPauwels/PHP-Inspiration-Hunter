@@ -195,7 +195,7 @@ if (!isset($_SESSION["user"])) {
 						</li>
 						<li class="report">
 							<a href="#" data-id = "<?php echo $post["postId"]?>">
-								<i class="fas fa-flag"></i>
+								<i class="fas fa-flag <?php $post["postId"]?>"></i>
 							</a>
 						</li>
 					</ul>
