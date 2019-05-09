@@ -10,7 +10,7 @@
 
         if ($report->notYetReported($_POST["postId"], $_SESSION["user"]["id"])) {
             $report->report();
-            // $report->deletePost($_POST["postId"]);
+            $report->deletePost($_POST["postId"]);
             $result = [
                 "status" => "success",
                 "message" => "Reported post"
@@ -18,7 +18,7 @@
         } else {
             $result = [
                 "status" => "error",
-                "message" => "Unable to report"
+                "message" => "Already reported"
             ];
         }
        

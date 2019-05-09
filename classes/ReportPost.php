@@ -81,7 +81,7 @@
 			}
 		}
 
-		/*public static function deletePost($postId) {
+		public static function deletePost($postId) {
 			try {
 				$conn = DB::getInstance();
 
@@ -92,17 +92,17 @@
 				$result = $statement->fetch(PDO::FETCH_ASSOC);
 
 				if ($result["count"] == 3) {
-					$stmnt = $conn->prepare("DELETE * FROM posts WHERE post_id = :postId");
+					$stmnt = $conn->prepare("UPDATE posts SET active = 0 WHERE id = :postId");
 					$stmnt->bindValue(":postId", $postId);
 					$stmnt->execute();
 					return true;
 				}
 				return false;
 
-			} catch {
+			} catch (Throwable $t) {
 				// If database connection fails
 				$_SESSION["errors"]["message"] = "<li>".$t."<li>";
 				return false;
 			}
-		}*/
+		}
     }

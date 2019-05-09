@@ -9,7 +9,7 @@ $(document).ready(function() {
             data: {
                 postId: postId
             }, 
-            dataType: "json"
+            dataType: "text"
         })
         .done(function(res) {
             console.log(res);
