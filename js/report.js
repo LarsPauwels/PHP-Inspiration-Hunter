@@ -8,7 +8,8 @@ $(document).ready(function() {
             url: "ajax/report.php",
             data: {
                 postId: postId
-            },
+            }, 
+            dataType: "json"
         })
         .done(function(res) {
             console.log(res);
