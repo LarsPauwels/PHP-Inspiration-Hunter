@@ -1,0 +1,31 @@
+header img.logo {
+	display: block !important;
+	position: absolute;
+}
+
+#map { 
+	width: 100vw; 
+	height: 100vh; 
+}
+
+.post-image-maps {
+	width: 100%;
+}
+
+.maps-container {
+	position: absolute;
+	top: auto ;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: 15px 30px;
+	background-color: rgba(0, 0, 0, 0.35);
+}
+
+.name {
+	margin-left: 15px;
+	color: #2b8ced;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+}

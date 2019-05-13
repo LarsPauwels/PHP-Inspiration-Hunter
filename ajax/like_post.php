@@ -1,8 +1,8 @@
 <?php
-	require_once("../bootstrap.php");
+	require_once("../bootstrap/bootstrap.php");
 
 	if (!empty($_POST)) {
-		$like = new LikePost();
+		$like = new Like();
 		$like->setPostId($_POST["postId"]);
 		$like->setUserId($_SESSION["user"]["id"]);
 

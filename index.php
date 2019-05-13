@@ -1,9 +1,9 @@
 <?php
-require_once("bootstrap.php");
+	require_once("bootstrap/bootstrap.php");
 
-if (!isset($_SESSION["user"])) {
-	header("Location: login");
-}
+	if (!isset($_SESSION["user"])) {
+		header("Location: login");
+	}
 ?><!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +12,7 @@ if (!isset($_SESSION["user"])) {
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 	<link href="https://fonts.googleapis.com/css?family=Raleway:400,500,600,700" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	<link rel="stylesheet" href="https://cssgram-cssgram.netdna-ssl.com/cssgram.min.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
@@ -56,7 +57,7 @@ if (!isset($_SESSION["user"])) {
 						<li>
 							<ul class="dropdown-items">
 								<li>
-									<a href="profile.php" class="dropdown-item">
+									<a href="profile?user=<?php echo $_SESSION['user']['username'] ?>" class="dropdown-item">
 										<i class="fa fa-user" aria-hidden="true"></i>
 										<span>Profile</span>
 									</a>
@@ -75,16 +76,16 @@ if (!isset($_SESSION["user"])) {
 										<span>Notifications</span>
 									</a>
 								</li>
-								<li class="extra-reverse upload-open">
-									<a href="#" class="dropdown-item">
-										<i class="fas fa-plus" aria-hidden="true"></i>
-										<span>Add Adventure</span>
-									</a>
-								</li>
 								<li class="extra-reverse followers-open">
 									<a href="#" class="dropdown-item">
 										<i class="fas fa-user-friends" aria-hidden="true"></i>
 										<span>Followers</span>
+									</a>
+								</li>
+								<li class="extra-reverse upload-open">
+									<a href="#" class="dropdown-item">
+										<i class="fas fa-plus" aria-hidden="true"></i>
+										<span>Add Adventure</span>
 									</a>
 								</li>
 								<li class="dropdown-line">
@@ -104,9 +105,11 @@ if (!isset($_SESSION["user"])) {
 	</header>
 
 	<nav>
-		<div class="hamburger">
-			<i class="fas fa-bars"></i>
-		</div>
+		<a href="index">
+			<div class="hamburger">
+				<i class="fas fa-bars"></i>
+			</div>
+		</a>
 
 		<ul id="menu">
 			<li class="active">
@@ -120,12 +123,16 @@ if (!isset($_SESSION["user"])) {
 				<span class="tooltiptext">Stories</span>
 			</li>
 			<li>
-				<i class="fas fa-user"></i>
-				<span class="tooltiptext">Users</span>
+				<a href="locations">
+					<i class="fas fa-map-marker-alt"></i>
+					<span class="tooltiptext">Locations</span>
+				</a>
 			</li>
 			<li>
-				<i class="fas fa-map-marker-alt"></i>
-				<span class="tooltiptext">Locations</span>
+				<a href="profile?user=<?php echo $_SESSION['user']['username']?>">
+					<i class="fas fa-user"></i>
+					<span class="tooltiptext">Profile</span>
+				</a>
 			</li>
 		</ul>
 		<ul id="submenu">
@@ -148,91 +155,110 @@ if (!isset($_SESSION["user"])) {
 		</div>
 	</div>
 
-	<section>
-		<?php
-			if (isset($_POST["amount"])) {
-				$amount = $_POST["amount"];
-			} else {
-				$amount = 20;
-			}
-
-			if (isset($_GET["q"]) && !empty($_GET["q"])) {
-				$posts = Post::searchPost($_GET["q"], $amount);
-			} else {
-				$posts = Post::getPost($amount);
-			}
-
-			if (!empty($posts)):
-				foreach ($posts as $post):
-		?>
-			<div class="posts-container">
-				<article>
-					<div class="post-header">
-						<div class="user-container">
-							<div class="user" style="background-image: url(<?php echo "uploads/profile_pic/".$post["profile_pic"]; ?>);"></div>
-							<p class="name"><?php echo $post["firstname"]." ".$post["lastname"]; ?></p>
-							<span>
-								<?php echo Post::getTime($post["postTimestamp"]); ?>
-							</span>
-						</div>
-					</div>
-					<div class="post-image" style="background-image: url(<?php echo "uploads/feed/".$post["image"] ?>);"></div>
-					<ul class="info">
-						<li>
-							<a href="#" data-id="<?php echo $post['postId']?>">
-								<i class="fas fa-heart like <?php if(!LikePost::alreadyLiked($_SESSION['user']['id'], $post['postId'])) { echo 'already-liked'; } ?>"></i>
-							</a>
-							<span class="likes"><?php echo LikePost::getLikes($post['postId']); ?></span>
-						</li>
-						<li>
-							<i class="fas fa-comment"></i>
-							<span class="comments"><?php echo CommentPost::countComments($post['postId']); ?></span>
-						</li>
-						<li>
-							<a href="#">
-								<i class="fas fa-share-alt"></i>
-							</a>
-						</li>
-					</ul>
-					<p class="comment"><a href="#" class="username"><?php echo $post["username"]; ?></a> <?php echo $post["postDescription"]; ?></p>
-					<div class="chat">
-						<div class="load-comments" data-post="<?php echo $post['postId']?>">
-
-						</div>
-						<hr>
-						<div class="message-container">
-							<input type="text" name="message" placeholder="Add a comment..." class="message" data-post="<?php echo $post['postId']; ?>">
-							<i class="fas fa-paper-plane"></i>
-						</div>
-					</div>
-				</article>
-				</div>
+	<div id="reload">
+		<section>
 			<?php
-				endforeach;
-					if(sizeof($posts) < Post::getAmountPost()[0]):
+				if (isset($_POST["amount"])) {
+					$amount = $_POST["amount"];
+				} else {
+					$amount = 20;
+				}
+
+				if (isset($_GET["q"]) && !empty($_GET["q"])) {
+					$posts = Post::searchPost($_GET["q"], $amount);
+				} else {
+					$posts = Post::getPost($amount);
+				}
+
+				if (!empty($posts)):
+					foreach ($posts as $post):
 			?>
-				<div class="load-more-container">
-					<button type="button" class="load-more">Load More</button>
-				</div>
-			<?php
+				<div class="posts-container">
+					<article>
+						<div class="post-header">
+							<div class="user-container">
+								<a href="profile?user=<?php echo $post['username'] ?>">
+									<div class="user" style="background-image: url(<?php echo "uploads/profile_pic/".$post["profile_pic"]; ?>);"></div>
+								</a>
+								<a href="profile?user=<?php echo $post['username'] ?>">
+									<p class="name"><?php echo $post["username"] ?></p>
+								</a>
+								<span>
+									<?php echo Date::getTimePast($post["postTimestamp"]); ?>
+								</span>
+							</div>
+						</div>
+						<div class="post-image <?php echo $post['class']?>" style="background-image: url(<?php echo "uploads/feed/".$post["image"] ?>);"></div>
+						<ul class="info">
+							<li>
+								<a href="#" data-id="<?php echo $post['postId']?>">
+									<i class="fas fa-heart like <?php if(!Like::alreadyLiked($_SESSION['user']['id'], $post['postId'])) { echo 'already-liked'; } ?>"></i>
+								</a>
+								<span class="likes"><?php echo Like::getLikes($post['postId']); ?></span>
+							</li>
+							<li>
+								<i class="fas fa-comment"></i>
+								<span class="comments"><?php echo Comment::countComments($post['postId']); ?></span>
+							</li>
+							<li>
+								<a href="#">
+									<i class="fas fa-share-alt"></i>
+								</a>
+							</li>
+							<li class="right">
+								<?php if(Post::notYetReported($post["postId"])):?>
+									<a href="#" data-id = "<?php echo $post["postId"]?>">
+										<i class="fas fa-flag <?php $post["postId"]?>"></i>
+									</a>
+								<?php else: ?>
+									<a href="#" class="reported" data-id = "<?php echo $post["postId"]?>">
+										<i class="fas fa-flag <?php $post["postId"]?>"></i>
+									</a>
+								<?php endif; ?>
+							</li>
+						</ul>
+						<p class="comment"><a href="profile?user=<?php echo $post['username'] ?>" class="username"><?php echo $post["username"]; ?></a> <?php echo $post["postDescription"]; ?></p>
+						<div class="chat">
+							<div class="load-comments" data-post="<?php echo $post['postId']?>">
+
+							</div>
+							<hr>
+							<div class="message-container">
+								<input type="text" name="message" placeholder="Add a comment..." class="message" data-post="<?php echo $post['postId']; ?>">
+								<i class="fas fa-paper-plane"></i>
+							</div>
+						</div>
+					</article>
+					</div>
+				<?php
+					endforeach;
+						if(sizeof($posts) < Post::getAmountPost()[0]):
+				?>
+					<div class="load-more-container">
+						<button type="button" class="load-more">Load More</button>
+					</div>
+				<?php
+						endif;
+					else:
+				?>
+					<div class="empty-state">
+						<img src="images/empty.png">
+						<h1>No entry found!</h1>
+						<p>There are no posts with this tag. So this tag can be for you alloon. <a href="upload">Wan't to use it?</a></p>
+					</div>
+				<?php
 					endif;
-				else:
-			?>
-				<div class="empty-state">
-					<img src="images/empty.png">
-					<h1>No entry found!</h1>
-					<p>There are no posts with this tag. So this tag can be for you alloon. <a href="upload">Wan't to use it?</a></p>
-				</div>
-			<?php
-				endif;
-			?>
-	</section>
+				?>
+		</section>
+	</div>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="js/like_post.js"></script>
 	<script src="js/load_more.js"></script>
 	<script src="js/comment_post.js"></script>
+	<script src="js/delete_post.js"></script>
 	<script src="js/search.js"></script>
-	<script src="js/index.js"></script>
+	<script src="js/header.js"></script>
+	<script src="js/report.js"></script>
 </body>
 </html>

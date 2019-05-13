@@ -2,7 +2,7 @@
 	/**
 	 * Making a connection to the database
 	 */
-	abstract class Db {
+	abstract class DB {
 		private static $conn;
 
 		private static function getConfig(){

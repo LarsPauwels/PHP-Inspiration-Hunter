@@ -63,6 +63,7 @@ body {
 	transition: 0.5s;
 	margin-bottom: 0.5em;
 	margin-top: 0.5em;
+	margin-bottom: 25px;
 }
 
 .form-modal .login-option {

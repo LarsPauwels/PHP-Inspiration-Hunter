@@ -1,5 +1,5 @@
 <?php
-	require_once("bootstrap.php");
+	require_once("bootstrap/bootstrap.php");
 
 	if(isset($_POST['login'])) {
 		// Start new class user
@@ -36,11 +36,11 @@
 		<div id="login-form">
 			<form action method="post">
 				<div class="input-container">
-					<input type="email" id="email" name="email" autofocus required/>
+					<input type="email" id="email" name="email" autofocus required value="<?php if(isset($_POST['email'])){ echo $_POST['email'];} ?>"/>
 					<label for="email">Email Address</label>
 				</div>
 				<div class="input-container">
-					<input type="password" id="password" name="password" autofocus required/>
+					<input type="password" id="password" name="password" autofocus required value="<?php if(isset($_POST['password'])){ echo $_POST['password'];} ?>"/>
 					<label for="password">Password</label>
 				</div>
 				<div class="clearfix extra-settings">
@@ -50,17 +50,8 @@
 							Remember me
 						</label>
 					</div>
-					<p><a href="javascript:void(0)">Forgotten account</a></p>
 				</div>
 				<button name="login" class="btn login">log in and explore</button>
-				<div class="or-container">
-					<span class="or">Or log in with</span>
-					<hr/>
-				</div>
-				<div class="clearfix">
-					<button type="button" class="btn login-option"> <i class="fab fa-facebook-f"></i>Facebook</button>
-					<button type="button" class="btn login-option"> <i class="fab fa-instagram"></i></i></i>Instagram</button>
-				</div>
 			</form>
 		</div>
 

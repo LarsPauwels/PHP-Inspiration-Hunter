@@ -1,0 +1,122 @@
+section {
+	padding: 0 !important;
+	margin-top: 750px;
+}
+
+header img.logo {
+	display: block !important;
+	position: absolute;
+}
+
+.banner {
+	background-image: url(../uploads/background_pic/standerd.jpg);
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	height: 620px;
+	position: relative;
+}
+
+.gradient {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 140px;
+	background: rgba(36,42,50,1);
+	background: -moz-linear-gradient(bottom, rgba(36,42,50,1) 0%, rgba(36,42,50,0.86) 14%, rgba(36,42,50,0) 100%);
+	background: -webkit-gradient(left bottom, left top, color-stop(0%, rgba(36,42,50,1)), color-stop(14%, rgba(36,42,50,0.86)), color-stop(100%, rgba(36,42,50,0)));
+	background: -webkit-linear-gradient(bottom, rgba(36,42,50,1) 0%, rgba(36,42,50,0.86) 14%, rgba(36,42,50,0) 100%);
+	background: -o-linear-gradient(bottom, rgba(36,42,50,1) 0%, rgba(36,42,50,0.86) 14%, rgba(36,42,50,0) 100%);
+	background: -ms-linear-gradient(bottom, rgba(36,42,50,1) 0%, rgba(36,42,50,0.86) 14%, rgba(36,42,50,0) 100%);
+	background: linear-gradient(to top, rgba(36,42,50,1) 0%, rgba(36,42,50,1) 14%, rgba(36,42,50,0) 100%);
+}
+
+.center-profile {
+	position: absolute;
+	left: 50%;
+	bottom: 0;
+	width: 60%;
+	transform: translate(-50%, 50%);
+}
+
+.profile-pic {
+	background-image: url(../uploads/profile_pic/standerd.jpg);
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	height: 210px;
+	width: 210px;
+	border-radius: 50%;
+	border: 3px solid #2b8ced;
+	cursor: pointer;
+	z-index: 1008;
+	display: inline-block;
+	position: relative;
+	float: left;
+}
+
+.upload-new {
+	transition: 0.3s;
+	opacity: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	border-radius: 50%;
+	background-color: rgba(0, 0, 0, 0.75);
+}
+
+.upload-new i {
+	color: #FFF;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-size: 50px;
+}
+
+.profile-pic:hover .upload-new {
+	opacity: 1;
+}
+
+.info-user {
+	margin: 0 60px;
+	display: inline-block;
+	float: left;
+	max-width: calc(100% - 330px);
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.info-user p {
+	color: #fff;
+	font-size: 45px;
+	font-family: Raleway;
+	font-weight: 100;
+}
+
+.info-user ul {
+	margin: 16px 0;
+}
+
+.info-user ul li {
+	display: inline-block;
+	color: #FFF;
+	font-family: Roboto;
+	margin-right: 25px;
+	font-weight: 600;
+}
+
+.info-user ul li span {
+	color: #2b8ced;
+	margin-right: 8px;
+	font-weight: normal;
+}
+
+.info-user .description {
+	font-size: 16px;
+	font-family: Raleway;
+}

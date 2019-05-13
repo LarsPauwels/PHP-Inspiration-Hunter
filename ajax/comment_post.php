@@ -1,8 +1,8 @@
 <?php
-	require_once("../bootstrap.php");
+	require_once("../bootstrap/bootstrap.php");
 
 	if (!empty($_POST)) {
-		$comment = new CommentPost();
+		$comment = new Comment();
 		$comment->setMessage($_POST["message"]);
 		$comment->setPostId($_POST["postId"]);
 		$comment->setUserId($_SESSION["user"]["id"]);

@@ -1,11 +1,12 @@
 <?php
-	require_once("bootstrap.php");
+	require_once("bootstrap/bootstrap.php");
 	if (!empty($_POST)) {
 		// Start new class user
-		$upload = new UploadPost();
+		$file = new File();
 		// Send posts to class setters
-		$upload->setFile($_FILES['file']);
-		if($upload->checkFile()) {
+		$file->setFile($_FILES['file']);
+		$file->setType("Image");
+		if($file->uploadFile("feed")) {
 			header("Location: post");
 		}
 	}

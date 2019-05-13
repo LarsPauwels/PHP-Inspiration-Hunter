@@ -1,5 +1,5 @@
 <?php
-	require_once("bootstrap.php");
+	require_once("bootstrap/bootstrap.php");
 
 	if (isset($_POST['register'])) {
 			// Start new class user
@@ -13,7 +13,7 @@
 		$user->setUsername($_POST["username"]);
 
 		if($user->register()) {
-			header("Location: login");
+			header("Location: index");
 		}
 	}
 ?><html>
@@ -41,27 +41,27 @@
 		<div id="signup-form">
 			<form action method="post">
 				<div class="input-container small">
-					<input type="text" id="firstname" name="firstname" autofocus required/>
+					<input type="text" id="firstname" name="firstname" value="<?php if(isset($_POST['firstname'])){ echo $_POST['firstname'];} ?>" autofocus required/>
 					<label for="firstname">First Name</label>
 				</div>
 				<div class="input-container small">
-					<input type="text" id="lastname" name="lastname" autofocus required/>
+					<input type="text" id="lastname" name="lastname" autofocus required value="<?php if(isset($_POST['lastname'])){ echo $_POST['lastname'];} ?>"/>
 					<label for="lastname">Last Name</label>
 				</div>
 				<div class="input-container">
-					<input type="email" id="email-register" name="email" autofocus required/>
+					<input type="email" id="email-register" name="email" autofocus required value="<?php if(isset($_POST['email'])){ echo $_POST['email'];} ?>"/>
 					<label for="email-register">Email Address</label>
 				</div>
 				<div class="input-container">
-					<input type="text" id="username-register" name="username" autofocus required/>
+					<input type="text" id="username-register" name="username" autofocus required value="<?php if(isset($_POST['username'])){ echo $_POST['username'];} ?>"/>
 					<label for="username-register">Username</label>
 				</div>
 				<div class="input-container">
-					<input type="password" id="password-register" name="password" autofocus required/>
+					<input type="password" id="password-register" name="password" autofocus required value="<?php if(isset($_POST['password'])){ echo $_POST['password'];} ?>"/>
 					<label for="password-register">Password</label>
 				</div>
 				<div class="input-container">
-					<input type="password" id="passwordConfirm" name="confirmPassword" autofocus required/>
+					<input type="password" id="passwordConfirm" name="confirmPassword" autofocus required value="<?php if(isset($_POST['confirmPassword'])){ echo $_POST['confirmPassword'];} ?>"/>
 					<label for="passwordConfirm">Confirm</label>
 				</div>
 				<div class="clearfix extra-settings">
@@ -73,14 +73,6 @@
 					</div>
 				</div>
 				<button name="register" class="btn login">Sign up and explore</button>
-				<div class="or-container">
-					<span class="or">Or sign up with</span>
-					<hr/>
-				</div>
-				<div class="clearfix">
-					<button type="button" class="btn login-option"> <i class="fab fa-facebook-f"></i>Facebook</button>
-					<button type="button" class="btn login-option"> <i class="fab fa-instagram"></i></i></i>Instagram</button>
-				</div>
 			</form>
 		</div>
 
