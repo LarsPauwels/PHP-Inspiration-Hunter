@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 	<link href="https://fonts.googleapis.com/css?family=Raleway:400,500,600,700" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	<link rel="stylesheet" href="https://cssgram-cssgram.netdna-ssl.com/cssgram.min.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<link rel="stylesheet" type="text/css" href="css/locations.css">
 </head>
@@ -27,31 +28,31 @@
 		</a>
 
 		<ul id="menu">
-			<li>
-				<a href="index">
+			<a href="index">
+				<li>
 					<i class="fas fa-compass"></i>
 					<span class="tooltiptext">Explore</span>
-				</a>
-			</li>
-			<li>
-				<i class="fas fa-ghost"></i>
-				<span class="tooltiptext">Stories</span>
-			</li>
-			<li>
-				<i class="fas fa-user"></i>
-				<span class="tooltiptext">Users</span>
-			</li>
-			<li class="active">
-				<a href="locations">
+				</li>
+			</a>
+			<a href="locations">
+				<li class="active">
 					<i class="fas fa-map-marker-alt"></i>
 					<span class="tooltiptext">Locations</span>
-				</a>
-			</li>
+				</li>
+			</a>
+			<a href="profile?user=<?php echo htmlspecialchars($_SESSION['user']['username']);?>">
+				<li>
+					<i class="fas fa-user"></i>
+					<span class="tooltiptext">Users</span>
+				</li>
+			</a>
 		</ul>
 		<ul id="submenu">
 			<li>
-				<i class="fas fa-cog"></i>
-				<span class="tooltiptext">Settings</span>
+				<a href="settings">
+					<i class="fas fa-cog"></i>
+					<span class="tooltiptext">Settings</span>
+				</a>
 			</li>
 			<li>
 				<a href="logout">
@@ -65,6 +66,17 @@
 	<div id="map"></div>
 
 <script>
+	function escapeHtml(text) {
+	  	var map = {
+	    	'&': '&amp;',
+	    	'<': '&lt;',
+	    	'>': '&gt;',
+	    	'"': '&quot;',
+	    	"'": '&#039;'
+	  	};
+
+	  	return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+	}
 	function initMap() {
 		var locations = [
 			<?php
@@ -87,20 +99,24 @@
         	});
 
            // add an infowindow to the currect marker so that we can click on it for details
-           attachInfowindow(marker, locations[i].name, locations[i].id, locations[i].image, locations[i].profile_pic);
+           attachInfowindow(marker, locations[i].name, locations[i].id, locations[i].image, locations[i].profile_pic, locations[i].postId, locations[i].filter);
        }
    }
 
-   function attachInfowindow( marker, name, id, image, profile_pic){
+   function attachInfowindow( marker, name, id, image, profile_pic, postId, filter){
        // this function adds an infowindow to the current marker in the loop
        var content = `
        		<div class='maps-container'>
        			<img src="${profile_pic}" class='user'>
-	       		<a href="profile.php?id=${id}" class='name'>
+	       		<a href="profile.php?user=${name}" class='name'>
 	       			${name}
 	       		</a>
        		</div>
-       		<img src="${image}" class='post-image-maps'>
+       		<a href='index?post=${postId}'>
+       			<div class='${filter}'>
+       				<img src="${image}" class='post-image-maps'>
+       			</div>
+       		</a>
        `;
 
        var infowindow = new google.maps.InfoWindow({

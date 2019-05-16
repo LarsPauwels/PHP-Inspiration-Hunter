@@ -346,7 +346,9 @@
 	    			$statement->bindParam(":id", $_SESSION["user"]["id"]);
 	    			$statement->bindParam(":description", $this->description);
 	    			$statement->execute();
+	    			return true;
 	    		}
+	    		return false;
 
 	    	} catch (Throwable $t) {
 	    		$_SESSION["errors"]["message"] = "Error: " . $t;
@@ -486,6 +488,38 @@
 	    		$statement->execute();
 	    		$user = $statement->fetch(PDO::FETCH_ASSOC);
 	    		$_SESSION["userDetails"] = $user;
+	    	} catch (Throwable $t) {
+	    		$_SESSION["errors"]["message"] = "Error: " . $t;
+	    		return false;
+	    	}
+	    }
+
+	    public static function getFollowers($user) {
+	    	try {
+	    		$conn = DB::getInstance();
+
+	    		$statement = $conn->prepare("SELECT count(*) AS count FROM followers, users WHERE users.id = followers.following AND users.username = :user");
+	    		$statement->bindParam(":user", $user);
+	    		$statement->execute();
+	    		$result = $statement->fetch(PDO::FETCH_ASSOC);
+
+	    		return Number::transform($result["count"]);
+	    	} catch (Throwable $t) {
+	    		$_SESSION["errors"]["message"] = "Error: " . $t;
+	    		return false;
+	    	}
+	    }
+
+	    public static function getFollowing($user) {
+	    	try {
+	    		$conn = DB::getInstance();
+
+	    		$statement = $conn->prepare("SELECT count(*) AS count FROM followers, users WHERE users.id = followers.follower AND users.username = :user");
+	    		$statement->bindParam(":user", $user);
+	    		$statement->execute();
+	    		$result = $statement->fetch(PDO::FETCH_ASSOC);
+
+	    		return Number::transform($result["count"]);
 	    	} catch (Throwable $t) {
 	    		$_SESSION["errors"]["message"] = "Error: " . $t;
 	    		return false;

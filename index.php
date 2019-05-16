@@ -26,25 +26,24 @@
 		<div id="header-right" class="clearfix">
 			<div class="search-container">
 				<form action method="get">
-					<input type="text" name="q" placeholder="Search for everything" class="search" value="<?php if(isset($_GET['q'])) { echo $_GET['q']; } ?>">
+					<input type="text" name="q" placeholder="Search for everything" class="search" value="<?php if(isset($_GET['q'])) { echo htmlspecialchars($_GET['q']); } ?>">
 					<button class="fas fa-search search-btn"></button>
 				</form>
 			</div>
 			<ul>
-				<li class="active extra bell-open">
-					<i class="fas fa-bell"></i>
-				</li>
-				<li class="extra followers-open">
+				<li class="extra active followers-open">
 					<i class="fas fa-user-friends"></i>
 				</li>
-				<li class="extra upload-open">
-					<i class="fas fa-cloud-upload-alt"></i>
-				</li>
+				<a href="upload">
+					<li class="extra upload-open">
+						<i class="fas fa-cloud-upload-alt"></i>
+					</li>
+				</a>
 				<li class="user-container">
 					<div class="user" style="background-image: url(<?php echo "uploads/profile_pic/".$_SESSION["user"]["profile_pic"] ?>);"></div>
 					<p class="name">
 						<?php
-						echo $_SESSION["user"]["firstname"]." ".$_SESSION["user"]["lastname"];
+						echo htmlspecialchars($_SESSION["user"]["firstname"]." ".$_SESSION["user"]["lastname"]);
 						?>
 					</p>
 					<div class="status">
@@ -57,24 +56,18 @@
 						<li>
 							<ul class="dropdown-items">
 								<li>
-									<a href="profile?user=<?php echo $_SESSION['user']['username'] ?>" class="dropdown-item">
+									<a href="profile?user=<?php echo htmlspecialchars($_SESSION['user']['username']); ?>" class="dropdown-item">
 										<i class="fa fa-user" aria-hidden="true"></i>
 										<span>Profile</span>
 									</a>
 								</li>
 								<li>
-									<a href="#" class="dropdown-item">
+									<a href="settings" class="dropdown-item">
 										<i class="fa fa-cog" aria-hidden="true"></i>
 										<span>Settings</span>
 									</a>
 								</li>
 								<li class="dropdown-line extra-reverse">
-								</li>
-								<li class="extra-reverse bell-open">
-									<a href="#" class="dropdown-item">
-										<i class="fas fa-bell" aria-hidden="true"></i>
-										<span>Notifications</span>
-									</a>
 								</li>
 								<li class="extra-reverse followers-open">
 									<a href="#" class="dropdown-item">
@@ -83,8 +76,8 @@
 									</a>
 								</li>
 								<li class="extra-reverse upload-open">
-									<a href="#" class="dropdown-item">
-										<i class="fas fa-plus" aria-hidden="true"></i>
+									<a href="upload" class="dropdown-item">
+										<i class="fas fa-cloud-upload-alt" aria-hidden="true"></i>
 										<span>Add Adventure</span>
 									</a>
 								</li>
@@ -112,33 +105,31 @@
 		</a>
 
 		<ul id="menu">
-			<li class="active">
-				<a href="index">
+			<a href="index">
+				<li class="active">
 					<i class="fas fa-compass"></i>
 					<span class="tooltiptext">Explore</span>
-				</a>
-			</li>
-			<li>
-				<i class="fas fa-ghost"></i>
-				<span class="tooltiptext">Stories</span>
-			</li>
-			<li>
-				<a href="locations">
+				</li>
+			</a>
+			<a href="locations">
+				<li>
 					<i class="fas fa-map-marker-alt"></i>
 					<span class="tooltiptext">Locations</span>
-				</a>
-			</li>
-			<li>
-				<a href="profile?user=<?php echo $_SESSION['user']['username']?>">
+				</li>
+			</a>
+			<a href="profile?user=<?php echo htmlspecialchars($_SESSION['user']['username'])?>">
+				<li>
 					<i class="fas fa-user"></i>
 					<span class="tooltiptext">Profile</span>
-				</a>
-			</li>
+				</li>
+			</a>
 		</ul>
 		<ul id="submenu">
 			<li>
-				<i class="fas fa-cog"></i>
-				<span class="tooltiptext">Settings</span>
+				<a href="settings">
+					<i class="fas fa-cog"></i>
+					<span class="tooltiptext">Settings</span>
+				</a>
 			</li>
 			<li>
 				<a href="logout">
@@ -166,6 +157,8 @@
 
 				if (isset($_GET["q"]) && !empty($_GET["q"])) {
 					$posts = Post::searchPost($_GET["q"], $amount);
+				} else if(isset($_GET["post"]) && !empty($_GET["post"])) {
+					$posts = Post::getPostById($_GET["post"], $amount);
 				} else {
 					$posts = Post::getPost($amount);
 				}
@@ -176,12 +169,12 @@
 				<div class="posts-container">
 					<article>
 						<div class="post-header">
-							<div class="user-container">
-								<a href="profile?user=<?php echo $post['username'] ?>">
+							<div class="user-container size">
+								<a href="profile?user=<?php echo htmlspecialchars($post['username']); ?>">
 									<div class="user" style="background-image: url(<?php echo "uploads/profile_pic/".$post["profile_pic"]; ?>);"></div>
 								</a>
-								<a href="profile?user=<?php echo $post['username'] ?>">
-									<p class="name"><?php echo $post["username"] ?></p>
+								<a href="profile?user=<?php echo htmlspecialchars($post['username']); ?>">
+									<p class="name"><?php echo htmlspecialchars($post["username"]); ?></p>
 								</a>
 								<span>
 									<?php echo Date::getTimePast($post["postTimestamp"]); ?>
@@ -217,7 +210,7 @@
 								<?php endif; ?>
 							</li>
 						</ul>
-						<p class="comment"><a href="profile?user=<?php echo $post['username'] ?>" class="username"><?php echo $post["username"]; ?></a> <?php echo $post["postDescription"]; ?></p>
+						<p class="comment"><a href="profile?user=<?php echo htmlspecialchars($post['username']); ?>" class="username"><?php echo htmlspecialchars($post["username"]); ?></a> <?php echo $post["postDescription"]; ?></p>
 						<div class="chat">
 							<div class="load-comments" data-post="<?php echo $post['postId']?>">
 
@@ -253,12 +246,11 @@
 	</div>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="js/header.js"></script>
 	<script src="js/like_post.js"></script>
 	<script src="js/load_more.js"></script>
 	<script src="js/comment_post.js"></script>
-	<script src="js/delete_post.js"></script>
 	<script src="js/search.js"></script>
-	<script src="js/header.js"></script>
 	<script src="js/report.js"></script>
 </body>
 </html>

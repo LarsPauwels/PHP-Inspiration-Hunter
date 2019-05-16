@@ -11,7 +11,6 @@
 		foreach (Comment::getComment($_POST["postId"]) as $comment):
 	?>
 		<li>
-			<i class="fas fa-heart"></i>
 			<p class="comment"><a href="#" class="username"><?php echo $comment["username"]; ?></a> <?php echo $comment["message"]; ?></p>
 		</li>
 	<?php

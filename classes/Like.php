@@ -42,7 +42,7 @@
             return $this;
         }
 
-        public function like() {
+        public function saveLike() {
             try {
                 $conn = DB::getInstance();
                 $statement = $conn->prepare("INSERT INTO likes_posts (post_id, user_id) values (:post_id, :user_id)");

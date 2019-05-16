@@ -2,18 +2,18 @@
 	require_once("../bootstrap/bootstrap.php");
 
 	if (!empty($_POST)) {
-		$like = new Like();
-		$like->setPostId($_POST["postId"]);
-		$like->setUserId($_SESSION["user"]["id"]);
+		$l = new Like();
+		$l->setPostId($_POST["postId"]);
+		$l->setUserId($_SESSION["user"]["id"]);
 
-		if ($like->alreadyLiked($_SESSION["user"]["id"],$_POST["postId"])) {
-			$like->like();
+		if ($l->alreadyLiked($_SESSION["user"]["id"],$_POST["postId"])) {
+			$l->saveLike();
 			$result = [
 				"status" => "success",
 				"message" => "Like was saved"
 			];	
 		} else {
-			$like->dislike();
+			$l->dislike();
 			$result = [
 				"status" => "fails",
 				"message" => "Already liked"

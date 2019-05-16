@@ -109,7 +109,7 @@
 	    		$conn = DB::getInstance();
 
 	    		$statement = $conn->prepare("SELECT *, posts.id AS postId, posts.timestamp AS postTimestamp, posts.description AS postDescription FROM posts, users, filters WHERE posts.user_id = users.id AND posts.filter_id = filters.id AND posts.active = 1 AND posts.description LIKE :search ORDER BY posts.timestamp DESC LIMIT :amount");
-	    		$statement->bindValue(":search", "%#".$search."%");
+	    		$statement->bindValue(":search", "%".$search."%");
 	    		$statement->bindValue(":amount", $amount, PDO::PARAM_INT);
 	    		$statement->execute();
 	    		$result = $statement->fetchAll();
@@ -117,7 +117,53 @@
 	    		if ($statement->rowCount() > 0) {
 	    			return Hashtags::getTags($result, "postDescription");
 	    		}
-	    		$_SESSION["errors"]["message"] = "<li>There are no posts to show with the tag(s) ".$search.".<li>";
+	    		$_SESSION["errors"]["message"] = "<li>There are no posts to show with the tag(s) ".htmlspecialchars($search).".<li>";
+	    		return false;
+	    	} catch(Throwable $t) {
+	    		// If database connection fails
+	    		$_SESSION["errors"]["message"] = "<li>".$t."<li>";
+	    		return false;
+	    	}
+	    }
+
+	    public static function getPostById($id, $amount) {
+	    	try {
+		    	// Getting database connection in class DB
+	    		$conn = DB::getInstance();
+
+	    		$statement = $conn->prepare("SELECT *, posts.id AS postId, posts.timestamp AS postTimestamp, posts.description AS postDescription FROM posts, users, filters WHERE posts.user_id = users.id AND posts.filter_id = filters.id AND posts.active = 1 AND posts.id = :id ORDER BY posts.timestamp DESC LIMIT :amount");
+	    		$statement->bindValue(":id", $id, PDO::PARAM_INT);
+	    		$statement->bindValue(":amount", $amount, PDO::PARAM_INT);
+	    		$statement->execute();
+	    		$result = $statement->fetchAll();
+
+	    		if ($statement->rowCount() > 0) {
+	    			return Hashtags::getTags($result, "postDescription");
+	    		}
+	    		$_SESSION["errors"]["message"] = "<li>There are no posts to show with the id ".$id.".<li>";
+	    		return false;
+	    	} catch(Throwable $t) {
+	    		// If database connection fails
+	    		$_SESSION["errors"]["message"] = "<li>".$t."<li>";
+	    		return false;
+	    	}
+	    }
+
+	    public static function getPostUser($user, $amount) {
+	    	try {
+		    	// Getting database connection in class DB
+	    		$conn = DB::getInstance();
+
+	    		$statement = $conn->prepare("SELECT *, posts.id AS postId, posts.timestamp AS postTimestamp, posts.description AS postDescription FROM posts, users, filters WHERE posts.user_id = users.id AND posts.filter_id = filters.id AND posts.active = 1 AND users.username = :user ORDER BY posts.timestamp DESC LIMIT :amount");
+	    		$statement->bindValue(":user", $user);
+	    		$statement->bindValue(":amount", $amount, PDO::PARAM_INT);
+	    		$statement->execute();
+	    		$result = $statement->fetchAll();
+
+	    		if ($statement->rowCount() > 0) {
+	    			return Hashtags::getTags($result, "postDescription");
+	    		}
+	    		$_SESSION["errors"]["message"] = "<li>There are no posts to show with the id ".$id.".<li>";
 	    		return false;
 	    	} catch(Throwable $t) {
 	    		// If database connection fails

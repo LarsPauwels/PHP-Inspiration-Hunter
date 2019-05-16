@@ -46,6 +46,7 @@ header {
 	z-index: 999;
 	height: 45px;
 	width: 100%;
+	padding: 0 15px;
 	background-color: #1d2127;
 }
 
@@ -85,12 +86,12 @@ section {
 }
 
 .container {
-	padding: 70px 30px 40px 30px;
 	width: 100%;
 	position: relative;
 }
 
 .container-inner {
+	padding: 70px 30px 40px 30px;
 	display: inline-block;
 	position: absolute;
 	left: 50%;

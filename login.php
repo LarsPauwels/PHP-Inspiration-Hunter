@@ -36,11 +36,11 @@
 		<div id="login-form">
 			<form action method="post">
 				<div class="input-container">
-					<input type="email" id="email" name="email" autofocus required value="<?php if(isset($_POST['email'])){ echo $_POST['email'];} ?>"/>
+					<input type="email" id="email" name="email" autofocus required value="<?php if(isset($_POST['email'])){ echo htmlspecialchars($_POST['email']);} ?>"/>
 					<label for="email">Email Address</label>
 				</div>
 				<div class="input-container">
-					<input type="password" id="password" name="password" autofocus required value="<?php if(isset($_POST['password'])){ echo $_POST['password'];} ?>"/>
+					<input type="password" id="password" name="password" autofocus required value="<?php if(isset($_POST['password'])){ echo htmlspecialchars($_POST['password']);} ?>"/>
 					<label for="password">Password</label>
 				</div>
 				<div class="clearfix extra-settings">

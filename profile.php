@@ -3,7 +3,7 @@
     require_once("bootstrap/bootstrap.php");
 
     // upload profile picture part
-    if (!empty($_POST["profilePic"])) {
+    if (isset($_POST["profilePic"])) {
         $file = new File();
         $file->setFile($_FILES["profilePic"]);
         $file->setType("Image");
@@ -12,32 +12,10 @@
         }
     }
 
-    // update description part
-    if (!empty($_POST["updateDescription"])) {
-        $user = new User();
-        $user->setDescription($_POST["description"]);
-        $user->updateDescription();
-    }
-
-    // update email part
-    if (!empty($_POST["updateEmail"])) {
-        $user = new User();
-        $user->setEmail($_POST["email"]);
-        $user->setPassword($_POST["password"]);
-        $user->updateEmail();
-    }
-
-    // update password part
-    if (!empty($_POST["updatePassword"])) {
-        $user = new User();
-        $user->setPassword($_POST["newPassword"]);
-        $user->setConfirmPassword($_POST["confirmPassword"]);
-        $user->setOldPassword($_POST["oldPassword"]);
-        $user->updatePassword();
-    }
-
     if (isset($_GET["user"])) {
         User::getUser($_GET["user"]);
+    } else {
+        header("Location: index");
     }
 
 ?><!DOCTYPE html>
@@ -46,10 +24,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Update email</title>
+    <title>Profile</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,500,600,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="https://cssgram-cssgram.netdna-ssl.com/cssgram.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/profile.css">
 </head>
@@ -69,29 +48,31 @@
         </a>
 
         <ul id="menu">
-            <li class="active">
-                <a href="index">
+            <a href="index">
+                <li>
                     <i class="fas fa-compass"></i>
                     <span class="tooltiptext">Explore</span>
-                </a>
-            </li>
-            <li>
-                <i class="fas fa-ghost"></i>
-                <span class="tooltiptext">Stories</span>
-            </li>
-            <li>
-                <i class="fas fa-user"></i>
-                <span class="tooltiptext">Users</span>
-            </li>
-            <li>
-                <i class="fas fa-map-marker-alt"></i>
-                <span class="tooltiptext">Locations</span>
-            </li>
+                </li>
+            </a>
+            <a href="locations">
+                <li>
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span class="tooltiptext">Locations</span>
+                </li>
+            </a>
+            <a href="profile?user=<?php echo htmlspecialchars($_SESSION['user']['username']);?>">
+                <li class="active">
+                    <i class="fas fa-user"></i>
+                    <span class="tooltiptext">Users</span>
+                </li>
+            </a>
         </ul>
         <ul id="submenu">
             <li>
-                <i class="fas fa-cog"></i>
-                <span class="tooltiptext">Settings</span>
+                <a href="settings">
+                    <i class="fas fa-cog"></i>
+                    <span class="tooltiptext">Settings</span>
+                </a>
             </li>
             <li>
                 <a href="logout">
@@ -107,28 +88,36 @@
             
         </div>
         <div class="center-profile">
-            <div class="profile-pic">
-                <div class="upload-new">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                    <span class="tooltiptext">New Profile Picture</span>
-                </div>
+            <div class="profile-pic" style="background-image: url(<?php echo "uploads/profile_pic/" . $_SESSION["userDetails"]["profile_pic"] ?>);">
+                <?php if ($_GET["user"] == $_SESSION["user"]["username"]): ?>
+                    <form method="post" action enctype="multipart/form-data">
+                        <label class="upload-new" for="upload">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span class="tooltiptext">New Profile Picture</span>
+                        </label>
+                        <input type="file" name="profilePic" id="upload">
+                        <div class="bottom-content">
+                            <button id="btn" name="profilePic">Send</button>
+                        </div>
+                    </form>
+                <?php endif; ?>
             </div>
 
             <div class="info-user">
-                <p><?php echo $_SESSION["userDetails"]["username"]; ?></p>
+                <p><?php echo htmlspecialchars($_SESSION["userDetails"]["username"]); ?></p>
                 <ul>
                     <li>
                         <span><?php echo Post::getUserAmountPost($_GET["user"]); ?></span> Posts
                     </li>
                     <li>
-                        <span>12k</span> Followers
+                        <span><?php echo User::getFollowers($_GET["user"]); ?></span> Followers
                     </li>
                     <li>
-                        <span>214</span> Following
+                        <span><?php echo User::getFollowing($_GET["user"]); ?></span> Following
                     </li>
                 </ul>
                 <p class="description">
-                    <?php echo $_SESSION["userDetails"]["description"]; ?>
+                    <?php echo htmlspecialchars($_SESSION["userDetails"]["description"]); ?>
                 </p>
             </div>
         </div>
@@ -143,10 +132,8 @@
                     $amount = 20;
                 }
 
-                if (isset($_GET["q"]) && !empty($_GET["q"])) {
-                    $posts = Post::searchPost($_GET["q"], $amount);
-                } else {
-                    $posts = Post::getPost($amount);
+                if (isset($_GET["user"]) && !empty($_GET["user"])) {
+                    $posts = Post::getPostUser($_GET["user"], $amount);
                 }
 
                 if (!empty($posts)):
@@ -157,7 +144,7 @@
                         <div class="post-header">
                             <div class="user-container">
                                 <div class="user" style="background-image: url(<?php echo "uploads/profile_pic/".$post["profile_pic"]; ?>);"></div>
-                                <p class="name"><?php echo $post["firstname"]." ".$post["lastname"]; ?></p>
+                                <p class="name"><?php echo htmlspecialchars($post["username"]); ?></p>
                                 <span>
                                     <?php echo Date::getTimePast($post["postTimestamp"]); ?>
                                 </span>
@@ -186,7 +173,7 @@
                                 </a>
                             </li>
                         </ul>
-                        <p class="comment"><a href="#" class="username"><?php echo $post["username"]; ?></a> <?php echo $post["postDescription"]; ?></p>
+                        <p class="comment"><a href="profile?user=<?php echo htmlspecialchars($post['username']); ?>" class="username"><?php echo htmlspecialchars($post["username"]); ?></a> <?php echo htmlspecialchars($post["postDescription"]); ?></p>
                         <div class="chat">
                             <div class="load-comments" data-post="<?php echo $post['postId']?>">
 
@@ -218,77 +205,14 @@
                 <?php
                     endif;
                 ?>
-            <!--<form action="" method="POST" enctype="multipart/form-data">
-                <h2>Upload profile picture</h2>
-
-                <div>
-                    <label for="profilePic">Upload profile pic</label>
-                    <input type="file" name="profilePic">
-                </div>
-
-                <div class="form__field">
-                    <input  name="profilePic" type="submit" value="Upload profile pic">
-                </div>
-
-            </form>
-
-            <form action="" method="POST">
-                <h2>Update description</h2>
-
-                <div>
-                    <label for="description">Description</label>
-                    <input type="text" name="description" id="description">
-                </div>
-
-                <div class="form__field">
-                    <input name="updateDescription" type="submit" value="Update description">
-                </div>
-
-            </form>
-            <form action="" method="POST">
-                <h2>Update email</h2>
-
-                <div>
-                   <label for="email">New email</label>
-                   <input type="email" name="email" id="email">
-               </div>
-
-               <div>
-                   <label for="password">Password</label>
-                   <input type="password" name="password" id="password">
-               </div>
-
-               <div class="form__field">
-                   <input name="updateEmail" type="submit" value="Update email">	
-               </div>
-
-           </form>
-           <form action="" method="POST">
-                <h2>Update password</h2>
-
-                <div>
-                    <label for="oldPassword">Current password</label>
-                    <input type="password" name="oldPassword" id="oldPassword">
-                </div>
-
-                <div>
-                    <label for="newPassword">New password</label>
-                    <input type="password" name="newPassword" id="newPassword">
-                </div>
-
-                <div>
-                    <label for="confirmPassword">Confirm new password</label>
-                    <input type="password" name="confirmPassword" id="confirmPassword">
-                </div>
-
-                <div class="form__field">
-                    <input name="updatePassword" type="submit" value="Update password">
-                </div>
-            </form>-->
         </section>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="js/header.js"></script>
+    <script src="js/like_post.js"></script>
+    <script src="js/load_more.js"></script>
+    <script src="js/comment_post.js"></script>
+    <script src="js/profile.js"></script>
 </body>
 </html>

@@ -123,7 +123,6 @@
 	    	$data = [
 	    		"country" => $this->country,
 	    		"postcode" => $this->postcode,
-	    		"streetname" => $this->streetname,
 	    		"town" => $this->town,
 	    		"lat" => $this->lat,
 	    		"lng" => $this->lng
@@ -134,9 +133,6 @@
 	    			"emptyFields"
 	    		],
 	    		"postcode" => [
-	    			"emptyFields"
-	    		],
-	    		"streetname" => [
 	    			"emptyFields"
 	    		],
 	    		"town" => [
@@ -299,7 +295,7 @@
 	    public static function getLocations() {
 	    	$conn = DB::getInstance();
 
-	    	$statement = $conn->prepare("SELECT *, users.id AS userId FROM locations, posts, users WHERE posts.location_id = locations.id AND posts.user_id = users.id");
+	    	$statement = $conn->prepare("SELECT *, users.id AS userId, posts.id AS postId FROM locations, posts, users, filters WHERE posts.location_id = locations.id AND posts.user_id = users.id AND posts.filter_id = filters.id AND posts.active = 1");
 			$statement->execute();
 	    	$locations = $statement->fetchAll();
 
@@ -308,7 +304,7 @@
 	    		foreach ($locations as $location) {
 	    			$profile_pic = "'uploads/profile_pic/".$location['profile_pic']."'";
 	    			$image = "'uploads/feed/".$location['image']."'";
-	    			$output .= '{profile_pic: '.$profile_pic.', name: "'.$location["username"].'", image: '.$image.', id: '.$location["userId"].', lat: '.$location["latitude"].', lng: '.$location["longitude"].'},';
+	    			$output .= '{filter: "'.$location["class"].'", postId: '.$location["postId"].', profile_pic: '.$profile_pic.', name: "'.htmlspecialchars($location["username"]).'", image: '.$image.', id: '.$location["userId"].', lat: '.$location["latitude"].', lng: '.$location["longitude"].'},';
 	    		}
 	    		return $output;
 	    	} else {

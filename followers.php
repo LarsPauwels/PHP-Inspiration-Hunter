@@ -4,7 +4,7 @@
 	<span>9</span>
 </div>
 <div class="search-container">
-	<input type="text" name="search" placeholder="Find friends" class="search">
+	<input type="text" name="search" placeholder="Find friends" class="search" id="width">
 	<button class="fas fa-search"></button>
 </div>
 <hr>

@@ -2,20 +2,6 @@ $(document).ready(function() {
 
 	var dropdown = true;
 
-	$(".bell-open").click(function() {
-		$(".extra").removeClass("active");
-		$(this).addClass("active");
-		$(".pop-up-container").addClass("open");
-		$(".pop-up").load("notifications");
-	});
-
-	$(".upload-open").click(function() {
-		$(".extra").removeClass("active");
-		$(this).addClass("active");
-		$(".pop-up-container").addClass("open");
-		$(".pop-up").load("choose");
-	});
-
 	$(".followers-open").click(function() {
 		$(".extra").removeClass("active");
 		$(this).addClass("active");
@@ -27,7 +13,7 @@ $(document).ready(function() {
 		$(".pop-up-container").removeClass("open");
 	});
 
-	$(".pop-up").load("notifications");
+	$(".pop-up").load("followers");
 
 	$("#menu li").click(function() {
 		$("#menu li").removeClass("active");
