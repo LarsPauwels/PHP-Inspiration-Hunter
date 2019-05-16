@@ -193,11 +193,6 @@
 								<i class="fas fa-comment"></i>
 								<span class="comments"><?php echo Comment::countComments($post['postId']); ?></span>
 							</li>
-							<li>
-								<a href="#">
-									<i class="fas fa-share-alt"></i>
-								</a>
-							</li>
 							<li class="right">
 								<?php if(Post::notYetReported($post["postId"])):?>
 									<a href="#" data-id = "<?php echo $post["postId"]?>">
