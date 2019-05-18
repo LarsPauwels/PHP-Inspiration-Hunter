@@ -84,21 +84,21 @@ if (isset($_SESSION["path"])) {
 				<form method="post" action>
 					<input type="text" id="filter-input" name="filter" hidden required value="0">
 					<div class="input-container textarea">
-						<textarea name="description" id="description"></textarea>
+						<textarea required name="description" id="description"></textarea>
 						<label for="description">Description</label>
 					</div>
 					<input type="text" name="lat" id="lat" readonly hidden>
 					<input type="text" name="lng" id="lng" readonly hidden>
 					<div class="input-container">
-						<input type="text" name="country" id="country">
+						<input type="text" name="country" id="country" required>
 						<label for="country">Country</label>
 					</div>
 					<div class="input-container">
-						<input type="text" name="postcode" id="postcode">
+						<input type="text" name="postcode" id="postcode" required>
 						<label for="postcode">Post Code</label>
 					</div>
 					<div class="input-container">
-						<input type="text" name="town" id="town">
+						<input type="text" name="town" id="town" required>
 						<label for="town">Town</label>
 					</div>
 					<div class="input-container">

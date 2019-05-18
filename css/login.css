@@ -206,7 +206,8 @@ body {
 }
 
 .form-modal .input-container input:focus + label,
-.form-modal .input-container input:active + label {
+.form-modal .input-container input:active + label,
+.form-modal .input-container input:valid + label {
 	color: #2b8ced;
 	top: 0;
 	background-color: #191e22;
@@ -230,10 +231,7 @@ body {
 	outline: none;
 	transition: 0.4s;
 	color: #FFF;
-}
-
-.form-modal.small input[type="text"] {
-	padding-left: 8em;
+	padding-left: 1.4em;
 }
 
 .form-modal input[type="email"]:focus, 
@@ -245,7 +243,6 @@ body {
 .form-modal.small input[type="text"]:focus, 
 .form-modal.small input[type="text"]:active {
 	border-color: #2b8ced;
-	padding-left: 1.4em;
 }
 
 .form-modal input[type="email"]::-webkit-input-placeholder,

@@ -110,7 +110,7 @@
 				<form method="post" action>
 					<h1>Change your description:</h1>
 					<div class="input-container textarea">
-						<textarea name="description" id="description"><?php if(isset($_POST["description"])) { echo htmlspecialchars($_POST["description"]); } ?></textarea>
+						<textarea autofocus name="description" id="description" required><?php if(isset($_POST["description"])) { echo htmlspecialchars($_POST["description"]); } ?></textarea>
 						<label for="description">Description</label>
 					</div>
 					<div class="buttons">
@@ -121,11 +121,11 @@
 				<form method="post" action>
 					<h1>Change your email:</h1>
 					<div class="input-container">
-                   		<input type="email" name="email" id="email" value="<?php if(isset($_POST["email"])) { echo htmlspecialchars($_POST["email"]); } ?>">
+                   		<input type="text" name="email" required id="email" value="<?php if(isset($_POST["email"])) { echo htmlspecialchars($_POST["email"]); } ?>">
                    		<label for="email">New email</label>
 					</div>
 					<div class="input-container">
-						<input type="password" name="password" id="password" value="<?php if(isset($_POST["password"])) { echo htmlspecialchars($_POST["password"]); } ?>">
+						<input type="password" name="password" required id="password" value="<?php if(isset($_POST["password"])) { echo htmlspecialchars($_POST["password"]); } ?>">
                    		<label for="password">Password</label>
 					</div>
 					<div class="buttons">
@@ -136,15 +136,15 @@
 				<form method="post" action class="changePassword">
 					<h1>Change your password:</h1>
 					<div class="input-container">
-                    	<input type="password" name="oldPassword" id="oldPassword" value="<?php if(isset($_POST["oldPassword"])) { echo htmlspecialchars($_POST["oldPassword"]); } ?>">
+                    	<input type="password" name="oldPassword" id="oldPassword" required value="<?php if(isset($_POST["oldPassword"])) { echo htmlspecialchars($_POST["oldPassword"]); } ?>">
                     	<label for="oldPassword">Current password</label>
 					</div>
 					<div class="input-container">
-						<input type="password" name="newPassword" id="newPassword" value="<?php if(isset($_POST["newPassword"])) { echo htmlspecialchars($_POST["newPassword"]); } ?>">
+						<input type="password" required name="newPassword" id="newPassword" value="<?php if(isset($_POST["newPassword"])) { echo htmlspecialchars($_POST["newPassword"]); } ?>">
 						<label for="newPassword">New password</label>
 					</div>
 					<div class="input-container">
-						<input type="password" name="confirmPassword" id="confirmPassword" value="<?php if(isset($_POST["confirmPassword"])) { echo htmlspecialchars($_POST["confirmPassword"]); } ?>">
+						<input type="password" required name="confirmPassword" id="confirmPassword" value="<?php if(isset($_POST["confirmPassword"])) { echo htmlspecialchars($_POST["confirmPassword"]); } ?>">
 						<label for="confirmPassword">Confirm new password</label>
 					</div>
 					<div class="buttons">

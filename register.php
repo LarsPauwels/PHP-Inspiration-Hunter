@@ -45,23 +45,23 @@
 					<label for="firstname">First Name</label>
 				</div>
 				<div class="input-container small">
-					<input type="text" id="lastname" name="lastname" autofocus required value="<?php if(isset($_POST['lastname'])){ echo htmlspecialchars($_POST['lastname']);} ?>"/>
+					<input type="text" id="lastname" name="lastname" required value="<?php if(isset($_POST['lastname'])){ echo htmlspecialchars($_POST['lastname']);} ?>"/>
 					<label for="lastname">Last Name</label>
 				</div>
 				<div class="input-container">
-					<input type="email" id="email-register" name="email" autofocus required value="<?php if(isset($_POST['email'])){ echo htmlspecialchars($_POST['email']);} ?>"/>
+					<input type="text" id="email-register" name="email" required value="<?php if(isset($_POST['email'])){ echo htmlspecialchars($_POST['email']);} ?>"/>
 					<label for="email-register">Email Address</label>
 				</div>
 				<div class="input-container">
-					<input type="text" id="username-register" name="username" autofocus required value="<?php if(isset($_POST['username'])){ echo htmlspecialchars($_POST['username']);} ?>"/>
+					<input type="text" id="username-register" name="username" required value="<?php if(isset($_POST['username'])){ echo htmlspecialchars($_POST['username']);} ?>"/>
 					<label for="username-register">Username</label>
 				</div>
 				<div class="input-container">
-					<input type="password" id="password-register" name="password" autofocus required value="<?php if(isset($_POST['password'])){ echo htmlspecialchars($_POST['password']);} ?>"/>
+					<input type="password" id="password-register" name="password" required value="<?php if(isset($_POST['password'])){ echo htmlspecialchars($_POST['password']);} ?>"/>
 					<label for="password-register">Password</label>
 				</div>
 				<div class="input-container">
-					<input type="password" id="passwordConfirm" name="confirmPassword" autofocus required value="<?php if(isset($_POST['confirmPassword'])){ echo htmlspecialchars($_POST['confirmPassword']);} ?>"/>
+					<input type="password" id="passwordConfirm" name="confirmPassword" required value="<?php if(isset($_POST['confirmPassword'])){ echo htmlspecialchars($_POST['confirmPassword']);} ?>"/>
 					<label for="passwordConfirm">Confirm</label>
 				</div>
 				<div class="clearfix extra-settings">

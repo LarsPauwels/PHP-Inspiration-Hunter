@@ -146,10 +146,6 @@ nav #submenu li i:hover {
 	width: 100% !important;
 }
 
-.changePassword input {
-	padding-left: 16.6em;
-}
-
 @media (min-width: 620px) {
 	header {
 		margin-left: 75px;

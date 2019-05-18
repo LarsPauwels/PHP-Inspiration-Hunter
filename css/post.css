@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 * {
 	margin: 0;
 	padding: 0;
@@ -227,7 +228,9 @@ form {
 .input-container input:focus + label,
 .input-container input:active + label,
 .input-container textarea:focus + label,
-.input-container textarea:active + label {
+.input-container textarea:active + label,
+.input-container input:valid + label,
+.input-container textarea:valid + label {
 	color: #2b8ced;
 	top: 0;
 	background-color: #242a32;
@@ -252,6 +255,7 @@ textarea {
 	outline: none;
 	transition: 0.4s;
 	color: #FFF;
+	padding-left: 1.4em;
 }
 
 textarea {
@@ -269,7 +273,6 @@ input[type="password"]:active,
 textarea:focus,
 textarea:active {
 	border-color: #2b8ced;
-	padding-left: 1.4em;
 }
 
 input[type="email"]::-webkit-input-placeholder,
